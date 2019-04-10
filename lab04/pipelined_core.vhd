@@ -45,6 +45,7 @@
 -- noncommercial research, and noncommercial scholarship purposes provided 
 -- that this notice in its entirety accompanies all copies.
 --
+-- LUH handling by Henry Veng 10/04/19
 ---------------------------------------------------------------------------
 
 library IEEE;
