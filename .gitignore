@@ -1,0 +1,17 @@
+lab04/_xmsgs/
+lab04/fuse.log
+lab04/fuse.xmsgs
+lab04/fuseRelaunch.cmd
+lab04/iseconfig/
+lab04/isim.cmd
+lab04/isim.log
+lab04/isim/
+lab04/pipelined_core.gise
+lab04/pipelined_core.xise
+lab04/pipelined_core_summary.html
+lab04/projfilesfull.zip
+lab04/testbench_beh.prj
+lab04/testbench_isim_beh.exe
+lab04/testbench_isim_beh.wdb
+lab04/testbench_stx_beh.prj
+lab04/xilinxsim.ini
