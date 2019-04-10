@@ -41,7 +41,8 @@ entity reg_ID_EX is
 			 read_data_a_in	: in  std_logic_vector(15 downto 0);
 			 read_data_b_in   : in  std_logic_vector(15 downto 0);
 			 imm_in				: in  std_logic_vector(15 downto 0);
-			 write_reg_a_in	: in  std_logic_vector(3 downto 0);
+			 reg_rs_in			: in 	std_logic_vector(3 downto 0);
+			 write_reg_a_in	: in  std_logic_vector(3 downto 0); --if/id Rt
 			 write_reg_b_in	: in  std_logic_vector(3 downto 0);
 			 branch_addr_in	: in  std_logic_vector(3 downto 0);
 			 
@@ -55,6 +56,7 @@ entity reg_ID_EX is
 			 read_data_a_out	: out std_logic_vector(15 downto 0);
 			 read_data_b_out  : out std_logic_vector(15 downto 0);
 			 imm_out				: out std_logic_vector(15 downto 0);
+ 			 reg_rs_out			: out	std_logic_vector(3 downto 0);
 			 write_reg_a_out	: out std_logic_vector(3 downto 0);
 			 write_reg_b_out	: out std_logic_vector(3 downto 0);
 			 branch_addr_out	: out  std_logic_vector(3 downto 0) );
@@ -76,6 +78,7 @@ begin
 			read_data_a_out <= (others => '0');
 			read_data_b_out <= (others => '0');
 			imm_out <= (others => '0');
+			reg_rs_out <= (others => '0');
 			write_reg_a_out <= (others => '0');
 			write_reg_b_out <= (others => '0');
 		elsif (rising_edge(clk)) then
@@ -89,6 +92,7 @@ begin
 			read_data_a_out <= read_data_a_in;
 			read_data_b_out <= read_data_b_in;
 			imm_out <= imm_in;
+			reg_rs_out <= reg_rs_in;
 			write_reg_a_out <= write_reg_a_in;
 			write_reg_b_out <= write_reg_b_in;
 		end if;
