@@ -51,16 +51,16 @@ begin
         
         if (reset = '1') then
             -- initial values of the data memory : reset to zero 
-            var_data_mem(0)  := X"0001";
-            var_data_mem(1)  := X"000A";
-            var_data_mem(2)  := X"0000";
-            var_data_mem(3)  := X"0000";
-            var_data_mem(4)  := X"0000";
-            var_data_mem(5)  := X"0000";
-            var_data_mem(6)  := X"0000";
-            var_data_mem(7)  := X"0000";
-            var_data_mem(8)  := X"0000";
-            var_data_mem(9)  := X"0000";
+            var_data_mem(0)  := X"0000";
+            var_data_mem(1)  := X"0001";
+            var_data_mem(2)  := X"0002";
+            var_data_mem(3)  := X"0003";
+            var_data_mem(4)  := X"0004";
+            var_data_mem(5)  := X"0005";
+            var_data_mem(6)  := X"0006";
+            var_data_mem(7)  := X"0007";
+            var_data_mem(8)  := X"0008";
+            var_data_mem(9)  := X"0009";
             var_data_mem(10) := X"0000";
             var_data_mem(11) := X"0000";
             var_data_mem(12) := X"0000";
