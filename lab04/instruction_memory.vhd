@@ -89,6 +89,16 @@ begin
 --        # format:  | opcode = 1 |  rs  |  rt  | offset |
 
 
+--            var_insn_mem(0)  := X"1010";
+--            var_insn_mem(1)  := X"8013";
+--            var_insn_mem(2)  := X"1032";
+--            var_insn_mem(3)  := X"1043";
+--            var_insn_mem(4)  := X"1054";
+--            var_insn_mem(5)  := X"1065";
+--            var_insn_mem(6)  := X"8013";
+--            var_insn_mem(7)  := X"8124";
+--            var_insn_mem(8)  := X"0000";
+
 --	add $2, $5, $3
 	--add $4, $2, $3
 	--add $3, $2, $4

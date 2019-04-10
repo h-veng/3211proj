@@ -47,6 +47,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 -- also added op_bne
 entity control_unit is
     port ( opcode     : in  std_logic_vector(3 downto 0);
+			  ctrl_flush : in  std_logic;
            reg_dst    : out std_logic;
            reg_write  : out std_logic;
            alu_src    : out std_logic;
@@ -65,27 +66,27 @@ constant OP_BNE   : std_logic_vector(3 downto 0) := "0100";
 
 begin
 
-    reg_dst    <= '1' when opcode = OP_ADD else
+    reg_dst    <= '1' when (opcode = OP_ADD) and (ctrl_flush = '0') else
                   '0';
 
     reg_write  <= '1' when (opcode = OP_ADD 
-                            or opcode = OP_LOAD) else
+                            or opcode = OP_LOAD) and (ctrl_flush = '0') else
                   '0';
     
     alu_src    <= '1' when (opcode = OP_LOAD 
-                           or opcode = OP_STORE) else
+                           or opcode = OP_STORE) and (ctrl_flush = '0') else
                   '0';
 	
-    alu        <= '1' when opcode = OP_BNE else
+    alu        <= '1' when (opcode = OP_BNE) and (ctrl_flush = '0') else
                   '0';
 
-	 branch     <= '1' when opcode = OP_BNE else
+	 branch     <= '1' when (opcode = OP_BNE) and (ctrl_flush = '0') else
                   '0';
     
-    mem_write  <= '1' when opcode = OP_STORE else
+    mem_write  <= '1' when (opcode = OP_STORE) and (ctrl_flush = '0') else
                   '0';
                  
-    mem_to_reg <= '1' when opcode = OP_LOAD else
+    mem_to_reg <= '1' when (opcode = OP_LOAD) and (ctrl_flush = '0') else
                   '0';
 
 end behavioural;
