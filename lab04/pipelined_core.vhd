@@ -166,6 +166,7 @@ component reg_ID_EX is
 			 read_data_a_in	: in  std_logic_vector(15 downto 0);
 			 read_data_b_in   : in  std_logic_vector(15 downto 0);
 			 imm_in				: in  std_logic_vector(15 downto 0);
+			 reg_rs_in			: in 	std_logic_vector(3 downto 0);
 			 write_reg_a_in	: in  std_logic_vector(3 downto 0);
 			 write_reg_b_in	: in  std_logic_vector(3 downto 0);
 			 branch_addr_in	: in  std_logic_vector(3 downto 0);
@@ -180,6 +181,7 @@ component reg_ID_EX is
 			 read_data_a_out	: out std_logic_vector(15 downto 0);
 			 read_data_b_out  : out std_logic_vector(15 downto 0);
 			 imm_out				: out std_logic_vector(15 downto 0);
+			 reg_rs_out			: out	std_logic_vector(3 downto 0);
 			 write_reg_a_out	: out std_logic_vector(3 downto 0);
 			 write_reg_b_out	: out std_logic_vector(3 downto 0);
 			 branch_addr_out	: out  std_logic_vector(3 downto 0) );
@@ -229,10 +231,10 @@ end component;
 component forwarding_unit is
     Port ( ex_mem_regWrite : in  STD_LOGIC;
 			  ex_mem_rd			: in	STD_LOGIC_VECTOR(3 downto 0);
-			  id_ex_rs			: in	STD_LOGIC_VECTOR(15 downto 0);
-			  id_ex_rt			: in	STD_LOGIC_VECTOR(15 downto 0);
+			  id_ex_rs			: in	STD_LOGIC_VECTOR(3 downto 0);
+			  id_ex_rt			: in	STD_LOGIC_VECTOR(3 downto 0);
 			  mem_wb_regWrite : in  STD_LOGIC;
-			  mem_wb_rd			: in	STD_LOGIC_VECTOR(15 downto 0);
+			  mem_wb_rd			: in	STD_LOGIC_VECTOR(3 downto 0);
 			  alu_op_1_mux		: out STD_LOGIC_vector(1 downto 0);
 			  alu_op_2_mux			: out STD_LOGIC_VECTOR(1 downto 0));
 end component;
@@ -309,7 +311,8 @@ signal sig_reg_dst_ex			  : std_logic;
 signal sig_read_data_a_ex		  : std_logic_vector(15 downto 0);
 signal sig_read_data_b_ex		  : std_logic_vector(15 downto 0);
 signal sig_sign_extended_offset_ex : std_logic_vector(15 downto 0);
-signal sig_write_reg_a_ex		  : std_logic_vector(3 downto 0);
+signal sig_reg_rs_ex				  : std_logic_vector(3 downto 0);
+signal sig_write_reg_a_ex		  : std_logic_vector(3 downto 0); -- also reg rt
 signal sig_write_reg_b_ex		  : std_logic_vector(3 downto 0);
 signal sig_write_register_ex    : std_logic_vector(3 downto 0);
 signal sig_alu_result_ex        : std_logic_vector(15 downto 0);
@@ -419,6 +422,7 @@ begin
 					read_data_a_in	 => sig_read_data_a_id,
 					read_data_b_in  => sig_read_data_b_id,
 					imm_in			 => sig_sign_extended_offset_id,
+					reg_rs_in		 => sig_insn_id(11 downto 8),
 					write_reg_a_in	 => sig_insn_id(7 downto 4),
 					write_reg_b_in	 => sig_insn_id(3 downto 0),
 					branch_addr_in	 => sig_insn_id(3 downto 0),
@@ -433,6 +437,7 @@ begin
 					read_data_a_out => sig_read_data_a_ex,
 					read_data_b_out => sig_read_data_b_ex,
 					imm_out			 => sig_sign_extended_offset_ex,
+					reg_rs_out		 => sig_reg_rs_ex,
 					write_reg_a_out => sig_write_reg_a_ex,
 					write_reg_b_out => sig_write_reg_b_ex,
 					branch_addr_out => sig_branch_addr_ex );
@@ -525,10 +530,10 @@ begin
 	forward_unit: forwarding_unit
 	port map (ex_mem_regWrite => sig_reg_write_mem,
 				ex_mem_rd => sig_write_register_mem,
-				id_ex_rs => sig_read_data_a_ex,
-				id_ex_rt => sig_read_data_b_ex,
+				id_ex_rs => sig_reg_rs_ex,
+				id_ex_rt => sig_write_reg_a_ex,
 				mem_wb_regWrite => sig_reg_write_wb,
-				mem_wb_rd => sig_write_data,
+				mem_wb_rd => sig_write_register_wb,
 				alu_op_1_mux => sig_alu_mux1_sel_ex,
 				alu_op_2_mux => sig_alu_mux2_sel_ex);
 				

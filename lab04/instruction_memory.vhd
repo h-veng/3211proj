@@ -99,18 +99,18 @@ begin
             var_insn_mem(3)  := X"1044";
             var_insn_mem(4)  := X"1055";
             var_insn_mem(5)  := X"0000";
-            var_insn_mem(6)  := X"0000";
-            var_insn_mem(7)  := X"0000";
-            var_insn_mem(8)  := X"0000";
+            var_insn_mem(6)  := X"8352";
+            var_insn_mem(7)  := X"8234";
+            var_insn_mem(8)  := X"8243";
             var_insn_mem(9)  := X"0000";
-            var_insn_mem(10) := X"8352";
-            var_insn_mem(11) := X"8234";
-            var_insn_mem(12) := X"8243";
+            var_insn_mem(10) := X"0000";
+            var_insn_mem(11) := X"0000";
+            var_insn_mem(12) := X"0000";
             var_insn_mem(13) := X"0000";
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";
         
-        elsif (rising_edge(clk)) then
+        else
             -- read instructions on the rising clock edge
             var_addr := conv_integer(addr_in);
             insn_out <= var_insn_mem(var_addr);
