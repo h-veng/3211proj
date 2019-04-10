@@ -57,7 +57,7 @@ begin
 				alu_op_1_mux <= "01";
 		elsif  (mem_wb_regWrite = '1')
 			and (mem_wb_rd /= "0000")
-			and (ex_mem_rd /= id_ex_rs)
+			and ((ex_mem_rd /= id_ex_rs) or ex_mem_regWrite = '0')
 			and (mem_wb_rd = id_ex_rs) then
 				alu_op_1_mux <= "10";
 		else
@@ -70,7 +70,7 @@ begin
 				alu_op_2_mux <= "01";
 		elsif  (mem_wb_regWrite = '1')
 			and (mem_wb_rd /= "0000")
-			and (ex_mem_rd /= id_ex_rt)
+			and ((ex_mem_rd /= id_ex_rt) or ex_mem_regWrite = '0')
 			and (mem_wb_rd = id_ex_rt) then
 				alu_op_2_mux <= "10";
 		else

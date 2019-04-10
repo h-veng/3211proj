@@ -108,12 +108,10 @@ begin
             var_insn_mem(2)  := X"1033";
             var_insn_mem(3)  := X"1044";
             var_insn_mem(4)  := X"1055";
-            var_insn_mem(5)  := X"0000";
-            var_insn_mem(6)  := X"8352";
-            var_insn_mem(7)  := X"8234";
-            var_insn_mem(8)  := X"8243";
---				 var_insn_mem(7)  := X"8232"; -- add $2, $2, $3
---           var_insn_mem(8)  := X"8223"; -- add $4, $3, $2 to test multiple dependency
+            var_insn_mem(5)  := X"8352";
+            --var_insn_mem(6)  := X"8234";
+            --var_insn_mem(7)  := X"8243";
+				var_insn_mem(8)  := X"0000";
             var_insn_mem(9)  := X"0000";
             var_insn_mem(10) := X"0000";
             var_insn_mem(11) := X"0000";
@@ -121,7 +119,10 @@ begin
             var_insn_mem(13) := X"0000";
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";
-        
+				
+				var_insn_mem(6)  := X"8232"; -- add $2, $2, $3
+            var_insn_mem(7)  := X"8223"; -- add $4, $3, $2 to test multiple dependency
+
         else
             -- read instructions on the rising clock edge
             var_addr := conv_integer(addr_in);
