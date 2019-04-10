@@ -78,20 +78,34 @@ begin
             --  insn_4 : store $3, $0, 2   - store data $3 into 2($0)
             --  insn_5 : store $4, $0, 3   - store data $4 into 3($0)
             --  insn_6 - insn_15 : noop    - end of program
+				
+				
+--     add   rd, rs, rt
+--        # rd <- rs + rt
+--        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
 
-            var_insn_mem(0)  := X"1010";
-            var_insn_mem(1)  := X"1021";
-            var_insn_mem(2)  := X"0000";
-            var_insn_mem(3)  := X"0000";
-            var_insn_mem(4)  := X"0000";
+--     load  rt, rs, offset     
+--        # load data at memory location (rs + offset) into rt
+--        # format:  | opcode = 1 |  rs  |  rt  | offset |
+
+
+--	add $2, $5, $3
+	--add $4, $2, $3
+	--add $3, $2, $4
+	
+            var_insn_mem(0)  := X"1011";
+            var_insn_mem(1)  := X"1022";
+            var_insn_mem(2)  := X"1033";
+            var_insn_mem(3)  := X"1044";
+            var_insn_mem(4)  := X"1055";
             var_insn_mem(5)  := X"0000";
-            var_insn_mem(6)  := X"8013";
-            var_insn_mem(7)  := X"8124";
+            var_insn_mem(6)  := X"0000";
+            var_insn_mem(7)  := X"0000";
             var_insn_mem(8)  := X"0000";
             var_insn_mem(9)  := X"0000";
-            var_insn_mem(10) := X"0000";
-            var_insn_mem(11) := X"0000";
-            var_insn_mem(12) := X"0000";
+            var_insn_mem(10) := X"8352";
+            var_insn_mem(11) := X"8234";
+            var_insn_mem(12) := X"8243";
             var_insn_mem(13) := X"0000";
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";

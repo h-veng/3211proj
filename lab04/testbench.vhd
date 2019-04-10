@@ -80,12 +80,8 @@ BEGIN
 		reset <= '1';
 		wait for 10 ns;
 		reset <= '0';
-      wait for clk_period*10;
+      wait for clk_period*20;
 
-
-      -- insert stimulus here 
-
-      wait;
    end process;
 
 END;
