@@ -65,6 +65,7 @@ architecture structural of pipelined_core is
 component program_counter is
     port ( reset    : in  std_logic;
            clk      : in  std_logic;
+			  pc_write : in  std_logic;
            addr_in  : in  std_logic_vector(3 downto 0);
            addr_out : out std_logic_vector(3 downto 0) );
 end component;
@@ -98,6 +99,7 @@ end component;
 -- Modification
 component control_unit is
     port ( opcode     : in  std_logic_vector(3 downto 0);
+			  ctrl_flush : in  std_logic;
            reg_dst    : out std_logic;
            reg_write  : out std_logic;
            alu_src    : out std_logic;
@@ -150,6 +152,7 @@ end component;
 -- pipeline mods
 component reg_IF_ID is
 	port ( clk, reset : in  std_logic;
+			 write_en	: in  std_logic;
 			 instr_in   : in  std_logic_vector (15 downto 0);
 			 instr_out  : out std_logic_vector (15 downto 0) );
 end component;
@@ -221,6 +224,16 @@ component reg_MEM_WB is
 			 mem_data_out		: out std_logic_vector(15 downto 0);
 			 alu_result_out	: out  std_logic_vector(15 downto 0);
 			 write_reg_out		: out std_logic_vector(3 downto 0) );
+end component;
+
+component hazard_detection_unit is
+	port ( mem_read : in std_logic; --mem_to_reg_ex
+			 id_reg_rs : in std_logic_vector(3 downto 0);
+			 id_reg_rt : in std_logic_vector(3 downto 0);
+			 ex_reg_rt : in std_logic_vector(3 downto 0);
+			 pc_write : out std_logic;
+			 if_id_write : out std_logic;
+			 id_ex_ctrl_flush : out std_logic );
 end component;
 -- end mods
 
@@ -299,6 +312,10 @@ signal sig_data_mem_out_wb      : std_logic_vector(15 downto 0);
 signal sig_alu_result_wb        : std_logic_vector(15 downto 0);
 signal sig_write_register_wb    : std_logic_vector(3 downto 0);
 
+signal sig_pc_write				  : std_logic;
+signal sig_if_id_write			  : std_logic;
+signal sig_ctrl_flush			  : std_logic;
+
 begin
 
     sig_one_4b <= "0001";
@@ -306,6 +323,7 @@ begin
     pc : program_counter
     port map ( reset    => reset,
                clk      => clk,
+					pc_write => sig_pc_write,
                addr_in  => sig_next_pc,
                addr_out => sig_curr_pc ); 
 	 
@@ -332,6 +350,7 @@ begin
 	 pipe_reg_if_id : reg_IF_ID
 	 port map ( reset     => reset,
 					clk       => clk,
+					write_en  => sig_if_id_write,
 					instr_in  => sig_insn_if,
 					instr_out => sig_insn_id );
 	 
@@ -356,6 +375,7 @@ begin
 	 -- Modification
     ctrl_unit : control_unit 
     port map ( opcode     => sig_insn_id(15 downto 12),
+					ctrl_flush => sig_ctrl_flush,
                reg_dst    => sig_reg_dst_id,
                reg_write  => sig_reg_write_id,
                alu_src    => sig_alu_src_id,
@@ -480,5 +500,15 @@ begin
                data_a     => sig_alu_result_wb,
                data_b     => sig_data_mem_out_wb,
                data_out   => sig_write_data );
+    
+	 -- hazard detection unit for LUH: stall
+	 hazard_unit : hazard_detection_unit
+	 port map ( mem_read => sig_mem_to_reg_ex,
+					id_reg_rs => sig_insn_id(11 downto 8),
+					id_reg_rt => sig_insn_id(7 downto 4),
+					ex_reg_rt => sig_write_reg_a_ex,
+					pc_write => sig_pc_write,
+					if_id_write => sig_if_id_write,
+			      id_ex_ctrl_flush => sig_ctrl_flush );
 
 end structural;

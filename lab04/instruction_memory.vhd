@@ -80,11 +80,11 @@ begin
             --  insn_6 - insn_15 : noop    - end of program
 
             var_insn_mem(0)  := X"1010";
-            var_insn_mem(1)  := X"1021";
-            var_insn_mem(2)  := X"0000";
-            var_insn_mem(3)  := X"0000";
-            var_insn_mem(4)  := X"0000";
-            var_insn_mem(5)  := X"0000";
+            var_insn_mem(1)  := X"8013";
+            var_insn_mem(2)  := X"1032";
+            var_insn_mem(3)  := X"1043";
+            var_insn_mem(4)  := X"1054";
+            var_insn_mem(5)  := X"1065";
             var_insn_mem(6)  := X"8013";
             var_insn_mem(7)  := X"8124";
             var_insn_mem(8)  := X"0000";
@@ -96,7 +96,7 @@ begin
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";
         
-        elsif (rising_edge(clk)) then
+        else
             -- read instructions on the rising clock edge
             var_addr := conv_integer(addr_in);
             insn_out <= var_insn_mem(var_addr);
