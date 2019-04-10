@@ -102,6 +102,8 @@ begin
             var_insn_mem(6)  := X"8352";
             var_insn_mem(7)  := X"8234";
             var_insn_mem(8)  := X"8243";
+--				 var_insn_mem(7)  := X"8232"; -- add $2, $2, $3
+--           var_insn_mem(8)  := X"8223"; -- add $4, $3, $2 to test multiple dependency
             var_insn_mem(9)  := X"0000";
             var_insn_mem(10) := X"0000";
             var_insn_mem(11) := X"0000";

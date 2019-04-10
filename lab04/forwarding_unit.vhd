@@ -51,20 +51,30 @@ begin
 	process(ex_mem_regWrite, ex_mem_rd, mem_wb_regWrite, mem_wb_rd, id_ex_rs, id_ex_rt) IS
 	BEGIN
 		-- Data Forwarded from Mem Stage
-		if (ex_mem_regWrite = '1') and (ex_mem_rd /= "0000") and(ex_mem_rd = id_ex_rs) then
-			alu_op_1_mux <= "01";
-		elsif (mem_wb_regWrite = '1') and (mem_wb_rd /= "0000") and(mem_wb_rd = id_ex_rs) then
-			alu_op_1_mux <= "10";
+		if 	 (ex_mem_regWrite = '1')
+			and (ex_mem_rd /= "0000")
+			and (ex_mem_rd = id_ex_rs) then
+				alu_op_1_mux <= "01";
+		elsif  (mem_wb_regWrite = '1')
+			and (mem_wb_rd /= "0000")
+			and (ex_mem_rd /= id_ex_rs)
+			and (mem_wb_rd = id_ex_rs) then
+				alu_op_1_mux <= "10";
 		else
-			alu_op_1_mux <= "00";
+				alu_op_1_mux <= "00";
 		end if;
 		
-		if (ex_mem_regWrite = '1') and (ex_mem_rd /= "0000") and(ex_mem_rd = id_ex_rt) then
-			alu_op_2_mux <= "01";
-		elsif (mem_wb_regWrite = '1') and (mem_wb_rd /= "0000") and(mem_wb_rd = id_ex_rt) then
-			alu_op_2_mux <= "10";
+		if  	 (ex_mem_regWrite = '1')
+			and (ex_mem_rd /= "0000")
+			and (ex_mem_rd = id_ex_rt) then
+				alu_op_2_mux <= "01";
+		elsif  (mem_wb_regWrite = '1')
+			and (mem_wb_rd /= "0000")
+			and (ex_mem_rd /= id_ex_rt)
+			and (mem_wb_rd = id_ex_rt) then
+				alu_op_2_mux <= "10";
 		else
-			alu_op_2_mux <= "00";
+				alu_op_2_mux <= "00";
 		end if;
 		
 	end process;
