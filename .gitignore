@@ -15,3 +15,5 @@ lab04/testbench_isim_beh.exe
 lab04/testbench_isim_beh.wdb
 lab04/testbench_stx_beh.prj
 lab04/xilinxsim.ini
+lab04/pipelined_core_isim_beh.exe
+lab04/pipelined_core_stx_beh.prj

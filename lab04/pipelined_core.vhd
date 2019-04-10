@@ -378,7 +378,7 @@ begin
 					reg_dst_in		 => sig_reg_dst_id,
 					read_data_a_in	 => sig_read_data_a_id,
 					read_data_b_in  => sig_read_data_b_id,
-					imm_in			 => sig_sign_extended_offset_ex,
+					imm_in			 => sig_sign_extended_offset_id,
 					write_reg_a_in	 => sig_insn_id(7 downto 4),
 					write_reg_b_in	 => sig_insn_id(3 downto 0),
 					branch_addr_in	 => sig_insn_id(3 downto 0),
