@@ -53,22 +53,22 @@ begin
 				--  insn_4 : store $1, $0, 2   - store data $1 into 2($0)
 				--  insn_5 - insn_15: noop		 - end
 				
---				var_insn_mem(0)  := X"1030";
---            var_insn_mem(1)  := X"1021";
---            var_insn_mem(2)  := X"8131";
---            var_insn_mem(3)  := X"4218";
---            var_insn_mem(4)  := X"3012";
---            var_insn_mem(5)  := X"0000";
---            var_insn_mem(6)  := X"0000";
---            var_insn_mem(7)  := X"0000";
---            var_insn_mem(8)  := X"0000";
---            var_insn_mem(9)  := X"0000";
---            var_insn_mem(10) := X"0000";
---            var_insn_mem(11) := X"0000";
---            var_insn_mem(12) := X"0000";
---            var_insn_mem(13) := X"0000";
---            var_insn_mem(14) := X"0000";
---            var_insn_mem(15) := X"0000";
+				var_insn_mem(0)  := X"1030";
+            var_insn_mem(1)  := X"1021";
+            var_insn_mem(2)  := X"8131";
+            var_insn_mem(3)  := X"4218";
+            var_insn_mem(4)  := X"3012";
+            var_insn_mem(5)  := X"0000";
+            var_insn_mem(6)  := X"0000";
+            var_insn_mem(7)  := X"0000";
+            var_insn_mem(8)  := X"0000";
+            var_insn_mem(9)  := X"0000";
+            var_insn_mem(10) := X"0000";
+            var_insn_mem(11) := X"0000";
+            var_insn_mem(12) := X"0000";
+            var_insn_mem(13) := X"0000";
+            var_insn_mem(14) := X"0000";
+            var_insn_mem(15) := X"0000";
 				
 				-- initial values of the instruction memory :
             --  insn_0 : load  $1, $0, 0   - load data 0($0) into $1
@@ -103,25 +103,25 @@ begin
 	--add $4, $2, $3
 	--add $3, $2, $4
 	
-            var_insn_mem(0)  := X"1011";
-            var_insn_mem(1)  := X"1022";
-            var_insn_mem(2)  := X"1033";
-            var_insn_mem(3)  := X"1044";
-            var_insn_mem(4)  := X"1055";
-            var_insn_mem(5)  := X"8352";
-            --var_insn_mem(6)  := X"8234";
-            --var_insn_mem(7)  := X"8243";
-				var_insn_mem(8)  := X"0000";
-            var_insn_mem(9)  := X"0000";
-            var_insn_mem(10) := X"0000";
-            var_insn_mem(11) := X"0000";
-            var_insn_mem(12) := X"0000";
-            var_insn_mem(13) := X"0000";
-            var_insn_mem(14) := X"0000";
-            var_insn_mem(15) := X"0000";
-				
-				var_insn_mem(6)  := X"8232"; -- add $2, $2, $3
-            var_insn_mem(7)  := X"8223"; -- add $4, $3, $2 to test multiple dependency
+--            var_insn_mem(0)  := X"1011";
+--            var_insn_mem(1)  := X"1022";
+--            var_insn_mem(2)  := X"1033";
+--            var_insn_mem(3)  := X"1044";
+--            var_insn_mem(4)  := X"1055";
+--            var_insn_mem(5)  := X"8352";
+--            --var_insn_mem(6)  := X"8234";
+--            --var_insn_mem(7)  := X"8243";
+--				var_insn_mem(8)  := X"0000";
+--            var_insn_mem(9)  := X"0000";
+--            var_insn_mem(10) := X"0000";
+--            var_insn_mem(11) := X"0000";
+--            var_insn_mem(12) := X"0000";
+--            var_insn_mem(13) := X"0000";
+--            var_insn_mem(14) := X"0000";
+--            var_insn_mem(15) := X"0000";
+--				
+--				var_insn_mem(6)  := X"8232"; -- add $2, $2, $3
+--            var_insn_mem(7)  := X"8223"; -- add $4, $3, $2 to test multiple dependency
 
         else
             -- read instructions on the rising clock edge

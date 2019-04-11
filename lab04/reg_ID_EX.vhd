@@ -81,6 +81,7 @@ begin
 			reg_rs_out <= (others => '0');
 			write_reg_a_out <= (others => '0');
 			write_reg_b_out <= (others => '0');
+			branch_addr_out <= (others => '0');
 		elsif (rising_edge(clk)) then
 			mem_to_reg_out <= mem_to_reg_in;
 			reg_write_out <= reg_write_in;
@@ -95,6 +96,7 @@ begin
 			reg_rs_out <= reg_rs_in;
 			write_reg_a_out <= write_reg_a_in;
 			write_reg_b_out <= write_reg_b_in;
+			branch_addr_out <= branch_addr_in;
 		end if;
 	end process;
 	

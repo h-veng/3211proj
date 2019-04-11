@@ -229,10 +229,13 @@ component reg_MEM_WB is
 end component;
 
 component hazard_detection_unit is
-	port ( mem_read : in std_logic; --mem_to_reg_ex
+	port ( counter_signal_in : in std_logic;
+			 mem_read : in std_logic; --mem_to_reg_ex
 			 id_reg_rs : in std_logic_vector(3 downto 0);
 			 id_reg_rt : in std_logic_vector(3 downto 0);
 			 ex_reg_rt : in std_logic_vector(3 downto 0);
+			 insn_op_code : in std_logic_vector(3 downto 0);
+			 counter_signal_out : out std_logic;
 			 pc_write : out std_logic;
 			 if_id_write : out std_logic;
 			 id_ex_ctrl_flush : out std_logic );
@@ -266,6 +269,13 @@ component alu_op_2_mux is
 			  wb_forward: in STD_LOGIC_VECTOR (15 downto 0);
 			  output: out STD_LOGIC_VECTOR (15 downto 0);
 			  mux_controller: in STD_LOGIC_VECTOR (1 downto 0));
+end component;
+
+component counter_3_cycles is
+	port ( clk : in std_logic;
+			 reset : in std_logic;
+			 start : in std_logic;
+			 finished : out std_logic );
 end component;
 
 -- end mods
@@ -350,6 +360,8 @@ signal sig_write_register_wb    : std_logic_vector(3 downto 0);
 signal sig_pc_write				  : std_logic;
 signal sig_if_id_write			  : std_logic;
 signal sig_ctrl_flush			  : std_logic;
+signal sig_start_count			  : std_logic;
+signal sig_count_finished		  : std_logic;
 
 --modifications forwarding table
 signal sig_alu_mux1_sel_ex	:std_logic_vector(1 downto 0);
@@ -547,10 +559,13 @@ begin
     
 	 -- hazard detection unit for LUH: stall
 	 hazard_unit : hazard_detection_unit
-	 port map ( mem_read => sig_mem_to_reg_ex,
+	 port map ( counter_signal_in => sig_count_finished,
+					mem_read => sig_mem_to_reg_ex,
 					id_reg_rs => sig_insn_id(11 downto 8),
 					id_reg_rt => sig_insn_id(7 downto 4),
 					ex_reg_rt => sig_write_reg_a_ex,
+					insn_op_code => sig_insn_if(15 downto 12),
+					counter_signal_out => sig_start_count,
 					pc_write => sig_pc_write,
 					if_id_write => sig_if_id_write,
 			      id_ex_ctrl_flush => sig_ctrl_flush );
@@ -580,6 +595,10 @@ begin
 				 output => sig_alu_mux2_result_ex,
 				 mux_controller => sig_alu_mux2_sel_ex);
 		
-	
+	counter: counter_3_cycles
+	port map ( clk => clk,
+				  reset => reset,
+				  start => sig_start_count,
+				  finished => sig_count_finished);
 
 end structural;

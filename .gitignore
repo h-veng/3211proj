@@ -18,3 +18,5 @@ lab04/xilinxsim.ini
 lab04/pipelined_core_isim_beh.exe
 lab04/pipelined_core_stx_beh.prj
 lab04/testbench_isim_beh1.wdb
+lab04/instruction_memory_isim_beh.exe
+lab04/instruction_memory_stx_beh.prj
