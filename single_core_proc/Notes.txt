@@ -1,0 +1,9 @@
+Control Hazard Handling:
+	Uses static branch prediction (unoptimised)
+		We predict that the branch is always taken. Thus, next pc is set to branch addr when opcode = bne
+		If bne condition fails (ie, rs = rt, DONT branch), we must set next pc to be the next addr in instruction
+		memory from the branch instruction (e.g. instruction 3 is bne; branches to instruction 2. If bne condition
+		fails, we must now load instruction 4 to pc). Instruction 4 is stored in sig_branch_addr (I know, the naming
+		doesn't fit :P That's why I'm writing up these notes). At mem stage, if branch = 1, and zero = 1 (ie, bne
+		instruction, and rs = rt) then we select the "branch addr" (which is actually the next addr in memory) and
+		flush all previous pipes. Signal is sig_branch_sel.
