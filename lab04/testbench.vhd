@@ -80,7 +80,7 @@ BEGIN
 		reset <= '1';
 		wait for 10 ns;
 		reset <= '0';
-      wait for clk_period*20;
+      wait for clk_period*100;
 
    end process;
 

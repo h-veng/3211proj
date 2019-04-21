@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    23:12:20 03/27/2019 
+-- Create Date:    14:23:47 04/21/2019 
 -- Design Name: 
--- Module Name:    reg_IF-ID - Behavioral 
+-- Module Name:    branch_prediction_unit - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,25 +29,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity reg_IF_ID is
-	port ( clk, reset : in  std_logic;
-			 write_en	: in  std_logic;
-			 flush		: in  std_logic;
-			 instr_in   : in  std_logic_vector (15 downto 0);
-			 instr_out  : out std_logic_vector (15 downto 0) );
-end reg_IF_ID;
+entity branch_prediction_unit is
+	port ( insn_op_code : in std_logic_vector(3 downto 0);
+			 imm_in : in std_logic_vector(3 downto 0);
+			 next_addr_in : in std_logic_vector(3 downto 0);
+			 imm_out : out std_logic_vector(3 downto 0);
+			 next_addr_out : out std_logic_vector(3 downto 0) );
+end branch_prediction_unit;
 
-architecture Behavioral of reg_IF_ID is
+architecture Behavioral of branch_prediction_unit is
+	constant OP_BNE   : std_logic_vector(3 downto 0) := "0100";
 begin
-	
-	update_process: process ( reset, clk ) is
-	begin
-		if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
-			instr_out <= (others => '0'); 
-		elsif (rising_edge(clk) and (write_en = '1')) then
-			instr_out <= instr_in; 
-		end if;
-	end process;
-
+	imm_out <= next_addr_in when (insn_op_code = OP_BNE) else
+				  imm_in;
+	next_addr_out <= imm_in when (insn_op_code = OP_BNE) else
+						  next_addr_in;
 end Behavioral;
 

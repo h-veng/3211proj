@@ -153,12 +153,14 @@ end component;
 component reg_IF_ID is
 	port ( clk, reset : in  std_logic;
 			 write_en	: in  std_logic;
+			 flush		: in  std_logic;
 			 instr_in   : in  std_logic_vector (15 downto 0);
 			 instr_out  : out std_logic_vector (15 downto 0) );
 end component;
 
 component reg_ID_EX is
 	port ( clk, reset  		: in  std_logic;
+			 flush				: in  std_logic;
 			 mem_to_reg_in 	: in	std_logic;
 			 reg_write_in 		: in  std_logic;
 			 branch_in			: in  std_logic;
@@ -192,6 +194,7 @@ end component;
 
 component reg_EX_MEM is
 	port ( clk, reset  		: in  std_logic;
+			 flush				: in  std_logic;
 			 mem_to_reg_in 	: in	std_logic;
 			 reg_write_in 		: in  std_logic;
 			 branch_in			: in  std_logic;
@@ -229,13 +232,10 @@ component reg_MEM_WB is
 end component;
 
 component hazard_detection_unit is
-	port ( counter_signal_in : in std_logic;
-			 mem_read : in std_logic; --mem_to_reg_ex
+	port ( mem_read : in std_logic; --mem_to_reg_ex
 			 id_reg_rs : in std_logic_vector(3 downto 0);
 			 id_reg_rt : in std_logic_vector(3 downto 0);
 			 ex_reg_rt : in std_logic_vector(3 downto 0);
-			 insn_op_code : in std_logic_vector(3 downto 0);
-			 counter_signal_out : out std_logic;
 			 pc_write : out std_logic;
 			 if_id_write : out std_logic;
 			 id_ex_ctrl_flush : out std_logic );
@@ -271,11 +271,12 @@ component alu_op_2_mux is
 			  mux_controller: in STD_LOGIC_VECTOR (1 downto 0));
 end component;
 
-component counter_3_cycles is
-	port ( clk : in std_logic;
-			 reset : in std_logic;
-			 start : in std_logic;
-			 finished : out std_logic );
+component branch_prediction_unit is
+	port ( insn_op_code : in std_logic_vector(3 downto 0);
+			 imm_in : in std_logic_vector(3 downto 0);
+			 next_addr_in : in std_logic_vector(3 downto 0);
+			 imm_out : out std_logic_vector(3 downto 0);
+			 next_addr_out : out std_logic_vector(3 downto 0) );
 end component;
 
 -- end mods
@@ -308,6 +309,7 @@ signal sig_next_instr			  : std_logic_vector(3 downto 0);
 
 -- modifications pipeline
 signal sig_insn_if              : std_logic_vector(15 downto 0);
+signal sig_insn_if_final		  : std_logic_vector(15 downto 0);
 
 signal sig_insn_id				  : std_logic_vector(15 downto 0);
 signal sig_mem_to_reg_id		  : std_logic;
@@ -360,14 +362,16 @@ signal sig_write_register_wb    : std_logic_vector(3 downto 0);
 signal sig_pc_write				  : std_logic;
 signal sig_if_id_write			  : std_logic;
 signal sig_ctrl_flush			  : std_logic;
-signal sig_start_count			  : std_logic;
-signal sig_count_finished		  : std_logic;
 
 --modifications forwarding table
 signal sig_alu_mux1_sel_ex	:std_logic_vector(1 downto 0);
 signal sig_alu_mux2_sel_ex	:std_logic_vector(1 downto 0);
 signal sig_alu_mux1_result_ex: std_logic_vector(15 downto 0);
 signal sig_alu_mux2_result_ex: std_logic_vector(15 downto 0);
+
+-- signals for branch prediction
+signal sig_pred_instr			  : std_logic_vector(3 downto 0);
+signal sig_branch_imm			  : std_logic_vector(3 downto 0);
 
 begin
 
@@ -382,7 +386,7 @@ begin
 	 
     next_pc : mux_2to1_4b
 	 port map ( mux_select => sig_branch_sel,
-					data_a     => sig_next_instr,
+					data_a     => sig_pred_instr,
 					data_b     => sig_branch_addr_mem,
 					data_out   => sig_next_pc );
 	 
@@ -398,13 +402,16 @@ begin
                clk      => clk,
                addr_in  => sig_curr_pc,
                insn_out => sig_insn_if );
-
+	 
+	 sig_insn_if_final <= sig_insn_if(15 downto 4) & sig_branch_imm;
+	 
     -- pipeline register if/id
 	 pipe_reg_if_id : reg_IF_ID
 	 port map ( reset     => reset,
 					clk       => clk,
 					write_en  => sig_if_id_write,
-					instr_in  => sig_insn_if,
+					flush		 => sig_branch_sel,
+					instr_in  => sig_insn_if_final,
 					instr_out => sig_insn_id );
 	 
 	 -- modified if/id
@@ -442,6 +449,7 @@ begin
 	 pipe_reg_id_ex : reg_ID_EX
 	 port map ( clk				 => clk,
 					reset  	       => reset,
+					flush				 => sig_branch_sel,
 					mem_to_reg_in 	 => sig_mem_to_reg_id,
 					reg_write_in 	 => sig_reg_write_id,
 					branch_in		 => sig_branch_id,
@@ -502,6 +510,7 @@ begin
 	 pipe_reg_ex_mem : reg_EX_MEM
 	 port map ( clk				 => clk,
 					reset				 => reset,
+					flush				 => sig_branch_sel,
 					mem_to_reg_in 	 => sig_mem_to_reg_ex,
 					reg_write_in 	 => sig_reg_write_ex,
 					branch_in		 => sig_branch_ex,
@@ -524,7 +533,7 @@ begin
 	 
 	 -- modification mem
 	 -- Modification
-	 sig_branch_sel <= (not sig_zero_mem) and sig_branch_mem;
+	 sig_branch_sel <= sig_zero_mem and sig_branch_mem;
 	 
 	 -- modification mem
     data_mem : data_memory 
@@ -559,13 +568,10 @@ begin
     
 	 -- hazard detection unit for LUH: stall
 	 hazard_unit : hazard_detection_unit
-	 port map ( counter_signal_in => sig_count_finished,
-					mem_read => sig_mem_to_reg_ex,
+	 port map ( mem_read => sig_mem_to_reg_ex,
 					id_reg_rs => sig_insn_id(11 downto 8),
 					id_reg_rt => sig_insn_id(7 downto 4),
 					ex_reg_rt => sig_write_reg_a_ex,
-					insn_op_code => sig_insn_if(15 downto 12),
-					counter_signal_out => sig_start_count,
 					pc_write => sig_pc_write,
 					if_id_write => sig_if_id_write,
 			      id_ex_ctrl_flush => sig_ctrl_flush );
@@ -594,11 +600,12 @@ begin
 				 wb_forward => sig_write_data,
 				 output => sig_alu_mux2_result_ex,
 				 mux_controller => sig_alu_mux2_sel_ex);
-		
-	counter: counter_3_cycles
-	port map ( clk => clk,
-				  reset => reset,
-				  start => sig_start_count,
-				  finished => sig_count_finished);
+
+	branch_predictor: branch_prediction_unit
+	port map ( insn_op_code => sig_insn_if(15 downto 12),
+				  imm_in => sig_insn_if(3 downto 0),
+				  next_addr_in => sig_next_instr,
+				  imm_out => sig_branch_imm,
+				  next_addr_out => sig_pred_instr );
 
 end structural;

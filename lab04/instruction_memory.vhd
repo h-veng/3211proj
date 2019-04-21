@@ -46,17 +46,17 @@ begin
     begin
         if (reset = '1') then
             -- bne test program
-				--	 insn_0 : load  $3, $0, 0   - load data 0($0) into $1
+				--	 insn_0 : load  $3, $0, 0   - load data 0($0) into $3
             --  insn_1 : load  $2, $0, 1   - load data 1($0) into $2
-				--  insn_2 : add   $1, $1, $3  - $1 <- $1 + $3
-				--  insn_3 : bne   $1, $2, 2   - if $1 != $2, jump to 2
+				--  insn_2 : add   $1, $1, $2  - $1 <- $1 + $2
+				--  insn_3 : bne   $1, $3, 2   - if $1 != $3, jump to 2
 				--  insn_4 : store $1, $0, 2   - store data $1 into 2($0)
 				--  insn_5 - insn_15: noop		 - end
 				
 				var_insn_mem(0)  := X"1030";
             var_insn_mem(1)  := X"1021";
-            var_insn_mem(2)  := X"8131";
-            var_insn_mem(3)  := X"4218";
+            var_insn_mem(2)  := X"8121";
+            var_insn_mem(3)  := X"4312";
             var_insn_mem(4)  := X"3012";
             var_insn_mem(5)  := X"0000";
             var_insn_mem(6)  := X"0000";

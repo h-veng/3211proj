@@ -31,6 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity reg_ID_EX is
 	port ( clk, reset  		: in  std_logic;
+			 flush				: in  std_logic;
 			 mem_to_reg_in 	: in	std_logic;
 			 reg_write_in 		: in  std_logic;
 			 branch_in			: in  std_logic;
@@ -67,7 +68,7 @@ begin
 
 	update_process: process ( reset, clk ) is
 	begin
-		if (reset = '1') then
+		if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
 			mem_to_reg_out <= '0';
 			reg_write_out <= '0';
 			branch_out <= '0';
