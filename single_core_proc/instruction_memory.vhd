@@ -45,49 +45,75 @@ begin
   
     begin
         if (reset = '1') then
-        --     noop      
-        --        # no operation or to signal end of program
-        --        # format:  | opcode = 0 |  0   |  0   |   0    | 
-        --
-        --     load  rt, rs, offset     
-        --        # load data at memory location (rs + offset) into rt
-        --        # format:  | opcode = 1 |  rs  |  rt  | offset |
-        --
-        --     store rt, rs, offset
-        --        # store data rt into memory location (rs + offset)
-        --        # format:  | opcode = 3 |  rs  |  rt  | offset |
-        --
-        --     add   rd, rs, rt
-        --        # rd <- rs + rt
-        --        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
-        --		
-        --		 bne   rt, rs, addr
-        --        # pc <- addr when rt != rs
-        --        # format:  | opcode = 4 |  rs  |  rt  |  addr  |
+          
+            
+--     noop      
+--        # no operation or to signal end of program
+--        # format:  | opcode = 0 |  0   |  0   |   0    | 
+--
+--     load  rt, rs, offset     
+--        # load data at memory location (rs + offset) into rt
+--        # format:  | opcode = 1 |  rs  |  rt  | offset |
+--
+--     store rt, rs, offset
+--        # store data rt into memory location (rs + offset)
+--        # format:  | opcode = 3 |  rs  |  rt  | offset |
+--
+--     add   rd, rs, rt
+--        # rd <- rs + rt
+--        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
+--		
+--		 bne   rt, rs, addr
+--        # pc <- addr when rt != rs
+--        # format:  | opcode = 4 |  rs  |  rt  |  addr  |
 
-            --Test expanded memory
 
-			var_insn_mem(0)  := X"8001";       --put 0 in $1
-            var_insn_mem(1)  := X"1012";       --load mem 0 into $1 (val of 15)
-            var_insn_mem(2)  := X"0000";       
-            var_insn_mem(3)  := X"0000";
-            var_insn_mem(4)  := X"0000";
-            var_insn_mem(5)  := X"1120";        --load mem 15 into 2 (val A000)
-            var_insn_mem(6)  := X"0000";
-            var_insn_mem(7)  := X"0000";
-            var_insn_mem(8)  := X"0000";
-            var_insn_mem(9)  := X"3100";        --load mem 1 into $1 (val of 30)
-            var_insn_mem(10) := X"0000";
-            var_insn_mem(11) := X"0000";
+            -- Pattern test program
+
+            -- Data memory setup
+                -- data(0) :1 as default
+                -- data(1-3) :these 3 words used to store the pattern, will be 64 words when we expand
+
+			var_insn_mem(0)  := X"1010";    --put 1 in $1 (load $1 with constant 1 from data memory)
+            var_insn_mem(1)  := X"8002";    --put 0 into $2 (add $0 and $0 and store result in $2)
+            var_insn_mem(2)  := X"8003";    --put 0 into $3 (add $0 and $0 and store result in $3)
+            --var_insn_mem(3)  := X"4312";    --do an IO read
+            var_insn_mem(3)  := X"1321";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
+            --loop 1: Get the pattern from stream
+            var_insn_mem(4)  := X"0000";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
+            var_insn_mem(5)  := X"0000";    --increment pattern counter (add register $0 and $1 and store in $3)
+            --var_insn_mem(6)  := X"0000";    --do an IO read
+            var_insn_mem(6)  := X"0000";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
+            var_insn_mem(7)  := X"0000";    --if input is not EOF character then loop (bne $2, $0, loop 1)
+            var_insn_mem(8)  := X"3324";
+            var_insn_mem(9)  := X"8133";
+            var_insn_mem(10) := X"1321";
+            var_insn_mem(11) := X"4204";
             var_insn_mem(12) := X"0000";
-            var_insn_mem(13) := X"0000";        --load mem 30 into 2 (val B000)
+            var_insn_mem(13) := X"0000";
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";
 
 
 
+--            var_insn_mem(4)  := X"3324";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
+--            var_insn_mem(5)  := X"8133";    --increment pattern counter (add register $0 and $1 and store in $3)
+--            --var_insn_mem(6)  := X"0000";    --do an IO read
+--            var_insn_mem(6)  := X"1321";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
+--            var_insn_mem(7)  := X"4204";    --if input is not EOF character then loop (bne $2, $0, loop 1)
+--            var_insn_mem(8)  := X"0000";
+--            var_insn_mem(9)  := X"0000";
+--            var_insn_mem(10) := X"0000";
+--            var_insn_mem(11) := X"0000";
+--            var_insn_mem(12) := X"0000";
+--            var_insn_mem(13) := X"0000";
+--            var_insn_mem(14) := X"0000";
+--            var_insn_mem(15) := X"0000";
+            
 
-
+		  
+		  
+		  
             -- bne test program
 				--	 insn_0 : load  $3, $0, 0   - load data 0($0) into $3
             --  insn_1 : load  $2, $0, 1   - load data 1($0) into $2
@@ -112,7 +138,6 @@ begin
             --var_insn_mem(13) := X"0000";
             --var_insn_mem(14) := X"0000";
             --var_insn_mem(15) := X"0000";
-            
 				
 				-- initial values of the instruction memory :
             --  insn_0 : load  $1, $0, 0   - load data 0($0) into $1
@@ -123,14 +148,7 @@ begin
             --  insn_5 : store $4, $0, 3   - store data $4 into 3($0)
             --  insn_6 - insn_15 : noop    - end of program
 				
-				
---     add   rd, rs, rt
---        # rd <- rs + rt
---        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
-
---     load  rt, rs, offset     
---        # load data at memory location (rs + offset) into rt
---        # format:  | opcode = 1 |  rs  |  rt  | offset |
+		
 
 
 --            var_insn_mem(0)  := X"1010";

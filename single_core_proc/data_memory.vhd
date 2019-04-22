@@ -309,6 +309,7 @@ begin
             var_data_mem(254)  := X"0000";
             var_data_mem(255)  := X"0000";
 
+
         elsif (falling_edge(clk) and write_enable = '1') then
             -- memory writes on the falling clock edge
             var_data_mem(var_addr) := write_data;
