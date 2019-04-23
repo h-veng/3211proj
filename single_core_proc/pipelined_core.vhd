@@ -517,7 +517,7 @@ begin
 					mem_write_in 	 => sig_mem_write_ex,
 					zero_in			 => sig_zero_ex,
 					alu_result_in	 => sig_alu_result_ex,
-					read_data_b_in  => sig_read_data_b_ex,
+					read_data_b_in  => sig_alu_mux2_result_ex,
 					write_reg_in	 => sig_write_register_ex,
 					branch_addr_in	 => sig_branch_addr_ex,
 			 
