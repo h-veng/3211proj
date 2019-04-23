@@ -117,7 +117,12 @@ begin
             var_data_mem(62)  := X"0000";
             var_data_mem(63)  := X"0000";
             var_data_mem(64)  := X"0000";
+<<<<<<< faae84addfa8965ced21adb8ae8c68e78024914f
             var_data_mem(65)  := X"C000";
+=======
+            -- End pattern
+            var_data_mem(65)  := X"0000";
+>>>>>>> sudo code for all instruction is in there, just need to fill out last few
             var_data_mem(66)  := X"0000";
             var_data_mem(67)  := X"0000";
             var_data_mem(68)  := X"0000";

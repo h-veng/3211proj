@@ -1,7 +1,7 @@
 
 
-startOfString = "var_data_mem("
-lengthOfArray = 256
+startOfString = "var_insn_mem("
+lengthOfArray = 64
 endOfString = ")  := X\"0000\";"
 
 for i in range(lengthOfArray):
