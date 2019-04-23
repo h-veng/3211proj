@@ -45,6 +45,49 @@ begin
   
     begin
         if (reset = '1') then
+        --     noop      
+        --        # no operation or to signal end of program
+        --        # format:  | opcode = 0 |  0   |  0   |   0    | 
+        --
+        --     load  rt, rs, offset     
+        --        # load data at memory location (rs + offset) into rt
+        --        # format:  | opcode = 1 |  rs  |  rt  | offset |
+        --
+        --     store rt, rs, offset
+        --        # store data rt into memory location (rs + offset)
+        --        # format:  | opcode = 3 |  rs  |  rt  | offset |
+        --
+        --     add   rd, rs, rt
+        --        # rd <- rs + rt
+        --        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
+        --		
+        --		 bne   rt, rs, addr
+        --        # pc <- addr when rt != rs
+        --        # format:  | opcode = 4 |  rs  |  rt  |  addr  |
+
+            --Test expanded memory
+
+			var_insn_mem(0)  := X"8001";       --put 0 in $1
+            var_insn_mem(1)  := X"1012";       --load mem 0 into $1 (val of 15)
+            var_insn_mem(2)  := X"0000";       
+            var_insn_mem(3)  := X"0000";
+            var_insn_mem(4)  := X"0000";
+            var_insn_mem(5)  := X"1120";        --load mem 15 into 2 (val A000)
+            var_insn_mem(6)  := X"0000";
+            var_insn_mem(7)  := X"0000";
+            var_insn_mem(8)  := X"0000";
+            var_insn_mem(9)  := X"3100";        --load mem 1 into $1 (val of 30)
+            var_insn_mem(10) := X"0000";
+            var_insn_mem(11) := X"0000";
+            var_insn_mem(12) := X"0000";
+            var_insn_mem(13) := X"0000";        --load mem 30 into 2 (val B000)
+            var_insn_mem(14) := X"0000";
+            var_insn_mem(15) := X"0000";
+
+
+
+
+
             -- bne test program
 				--	 insn_0 : load  $3, $0, 0   - load data 0($0) into $3
             --  insn_1 : load  $2, $0, 1   - load data 1($0) into $2
@@ -53,22 +96,23 @@ begin
 				--  insn_4 : store $1, $0, 2   - store data $1 into 2($0)
 				--  insn_5 - insn_15: noop		 - end
 				
-				var_insn_mem(0)  := X"1030";
-            var_insn_mem(1)  := X"1021";
-            var_insn_mem(2)  := X"8121";
-            var_insn_mem(3)  := X"4312";
-            var_insn_mem(4)  := X"3012";
-            var_insn_mem(5)  := X"0000";
-            var_insn_mem(6)  := X"0000";
-            var_insn_mem(7)  := X"0000";
-            var_insn_mem(8)  := X"0000";
-            var_insn_mem(9)  := X"0000";
-            var_insn_mem(10) := X"0000";
-            var_insn_mem(11) := X"0000";
-            var_insn_mem(12) := X"0000";
-            var_insn_mem(13) := X"0000";
-            var_insn_mem(14) := X"0000";
-            var_insn_mem(15) := X"0000";
+			--var_insn_mem(0)  := X"1030";
+            --var_insn_mem(1)  := X"1021";
+            --var_insn_mem(2)  := X"8121";
+            --var_insn_mem(3)  := X"4312";
+            --var_insn_mem(4)  := X"3012";
+            --var_insn_mem(5)  := X"0000";
+            --var_insn_mem(6)  := X"0000";
+            --var_insn_mem(7)  := X"0000";
+            --var_insn_mem(8)  := X"0000";
+            --var_insn_mem(9)  := X"0000";
+            --var_insn_mem(10) := X"0000";
+            --var_insn_mem(11) := X"0000";
+            --var_insn_mem(12) := X"0000";
+            --var_insn_mem(13) := X"0000";
+            --var_insn_mem(14) := X"0000";
+            --var_insn_mem(15) := X"0000";
+            
 				
 				-- initial values of the instruction memory :
             --  insn_0 : load  $1, $0, 0   - load data 0($0) into $1
