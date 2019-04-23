@@ -55,7 +55,7 @@ begin
                 --begin hardcoded pattern
             var_data_mem(1)  := X"0061";    --letter a
             var_data_mem(2)  := X"0062";    --letter b
-            var_data_mem(3)  := X"0000";
+            var_data_mem(3)  := X"0063";
                 --end hardcoded pattern
             var_data_mem(4)  := X"0000";
             var_data_mem(5)  := X"0000";

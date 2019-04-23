@@ -79,37 +79,36 @@ begin
             var_insn_mem(2)  := X"8003";    --put 0 into $3 (add $0 and $0 and store result in $3)
             --var_insn_mem(3)  := X"4312";    --do an IO read
             var_insn_mem(3)  := X"1321";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
-            --loop 1: Get the pattern from stream
-            var_insn_mem(4)  := X"0000";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
-            var_insn_mem(5)  := X"0000";    --increment pattern counter (add register $0 and $1 and store in $3)
+            var_insn_mem(4)  := X"3324";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
+            var_insn_mem(5)  := X"8133";    --increment pattern counter (add register $0 and $1 and store in $3)
             --var_insn_mem(6)  := X"0000";    --do an IO read
-            var_insn_mem(6)  := X"0000";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
-            var_insn_mem(7)  := X"0000";    --if input is not EOF character then loop (bne $2, $0, loop 1)
-            var_insn_mem(8)  := X"3324";
-            var_insn_mem(9)  := X"8133";
-            var_insn_mem(10) := X"1321";
-            var_insn_mem(11) := X"4204";
+            var_insn_mem(6)  := X"1321";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
+            var_insn_mem(7)  := X"4204";    --if input is not EOF character then loop (bne $2, $0, loop 1)
+            var_insn_mem(8)  := X"0000";
+            var_insn_mem(9)  := X"0000";
+            var_insn_mem(10) := X"0000";
+            var_insn_mem(11) := X"0000";
             var_insn_mem(12) := X"0000";
             var_insn_mem(13) := X"0000";
             var_insn_mem(14) := X"0000";
             var_insn_mem(15) := X"0000";
-
-
-
---            var_insn_mem(4)  := X"3324";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
---            var_insn_mem(5)  := X"8133";    --increment pattern counter (add register $0 and $1 and store in $3)
+            
+            --loop 1: Get the pattern from stream
+--            var_insn_mem(4)  := X"0000";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 4) 
+--            var_insn_mem(5)  := X"0000";    --increment pattern counter (add register $0 and $1 and store in $3)
 --            --var_insn_mem(6)  := X"0000";    --do an IO read
---            var_insn_mem(6)  := X"1321";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
---            var_insn_mem(7)  := X"4204";    --if input is not EOF character then loop (bne $2, $0, loop 1)
---            var_insn_mem(8)  := X"0000";
---            var_insn_mem(9)  := X"0000";
---            var_insn_mem(10) := X"0000";
---            var_insn_mem(11) := X"0000";
+--            var_insn_mem(6)  := X"0000";		-- this is a faux IO read (load datamem at location $3 + offset 1 into register $2)
+--            var_insn_mem(7)  := X"0000";    --if input is not EOF character then loop (bne $2, $0, loop 1)
+--            var_insn_mem(8)  := X"3324";
+--            var_insn_mem(9)  := X"8133";
+--            var_insn_mem(10) := X"1321";
+--            var_insn_mem(11) := X"4204";
 --            var_insn_mem(12) := X"0000";
 --            var_insn_mem(13) := X"0000";
 --            var_insn_mem(14) := X"0000";
 --            var_insn_mem(15) := X"0000";
-            
+
+
 
 		  
 		  
