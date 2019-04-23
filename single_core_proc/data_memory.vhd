@@ -53,9 +53,11 @@ begin
             -- initial values of the data memory : reset to zero 
             
             var_data_mem(0)  := X"0001";
-            var_data_mem(1)  := X"0000";  
-            var_data_mem(2)  := X"0000";   
-            var_data_mem(3)  := X"0000";   
+            -- Begin pattern
+            -- For faux IOread the hardcoded pattern starts here
+            var_data_mem(1)  := X"0061";  
+            var_data_mem(2)  := X"0062";   
+            var_data_mem(3)  := X"0063";   
             var_data_mem(4)  := X"0000";
             var_data_mem(5)  := X"0000";
             var_data_mem(6)  := X"0000";
@@ -66,7 +68,7 @@ begin
             var_data_mem(11)  := X"0000";
             var_data_mem(12)  := X"0000";
             var_data_mem(13)  := X"0000";
-            var_data_mem(14)  := X"0000";
+            var_data_mem(14)  := X"0000";            
             var_data_mem(15)  := X"0000";
             var_data_mem(16)  := X"0000";
             var_data_mem(17)  := X"0000";
@@ -117,6 +119,7 @@ begin
             var_data_mem(62)  := X"0000";
             var_data_mem(63)  := X"0000";
             var_data_mem(64)  := X"0000";
+            -- End pattern
             var_data_mem(65)  := X"0000";
             var_data_mem(66)  := X"0000";
             var_data_mem(67)  := X"0000";
