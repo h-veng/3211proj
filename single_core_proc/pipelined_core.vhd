@@ -145,7 +145,7 @@ component data_memory is
            clk          : in  std_logic;
            write_enable : in  std_logic;
            write_data   : in  std_logic_vector(15 downto 0);
-           addr_in      : in  std_logic_vector(3 downto 0);
+           addr_in      : in  std_logic_vector(7 downto 0);			--modified for 8 bit
            data_out     : out std_logic_vector(15 downto 0) );
 end component;
 
@@ -517,7 +517,7 @@ begin
 					mem_write_in 	 => sig_mem_write_ex,
 					zero_in			 => sig_zero_ex,
 					alu_result_in	 => sig_alu_result_ex,
-					read_data_b_in  => sig_read_data_b_ex,
+					read_data_b_in  => sig_alu_mux2_result_ex,
 					write_reg_in	 => sig_write_register_ex,
 					branch_addr_in	 => sig_branch_addr_ex,
 			 
@@ -541,7 +541,7 @@ begin
                clk          => clk,
                write_enable => sig_mem_write_mem,
                write_data   => sig_read_data_b_mem,
-               addr_in      => sig_alu_result_mem(3 downto 0),
+               addr_in      => sig_alu_result_mem(7 downto 0),			--modified for 8 bit
                data_out     => sig_data_mem_out_mem );
     
 	 -- pipeline register mem/wb
