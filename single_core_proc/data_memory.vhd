@@ -52,11 +52,11 @@ begin
         if (reset = '1') then
             -- initial values of the data memory : reset to zero 
             
-            var_data_mem(0)  := X"000F";    --15
-            var_data_mem(1)  := X"001E";    --30
-            var_data_mem(2)  := X"0041";    --65
-            var_data_mem(3)  := X"007D";    --125
-            var_data_mem(4)  := X"0000";
+            var_data_mem(0)  := X"0000";
+            var_data_mem(1)  := X"0001";
+            var_data_mem(2)  := X"0002";
+            var_data_mem(3)  := X"0003";    
+            var_data_mem(4)  := X"0004";
             var_data_mem(5)  := X"0000";
             var_data_mem(6)  := X"0000";
             var_data_mem(7)  := X"0000";
@@ -117,12 +117,8 @@ begin
             var_data_mem(62)  := X"0000";
             var_data_mem(63)  := X"0000";
             var_data_mem(64)  := X"0000";
-<<<<<<< faae84addfa8965ced21adb8ae8c68e78024914f
-            var_data_mem(65)  := X"C000";
-=======
             -- End pattern
             var_data_mem(65)  := X"0000";
->>>>>>> sudo code for all instruction is in there, just need to fill out last few
             var_data_mem(66)  := X"0000";
             var_data_mem(67)  := X"0000";
             var_data_mem(68)  := X"0000";
@@ -313,7 +309,6 @@ begin
             var_data_mem(253)  := X"0000";
             var_data_mem(254)  := X"0000";
             var_data_mem(255)  := X"0000";
-
 
         elsif (falling_edge(clk) and write_enable = '1') then
             -- memory writes on the falling clock edge
