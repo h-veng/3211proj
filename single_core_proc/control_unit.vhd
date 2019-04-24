@@ -48,6 +48,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity control_unit is
     port ( opcode     : in  std_logic_vector(3 downto 0);
 			  ctrl_flush : in  std_logic;
+			  io_read    : out std_logic;
            reg_dst    : out std_logic;
            reg_write  : out std_logic;
            alu_src    : out std_logic;
@@ -63,14 +64,19 @@ constant OP_LOAD  : std_logic_vector(3 downto 0) := "0001";
 constant OP_STORE : std_logic_vector(3 downto 0) := "0011";
 constant OP_ADD   : std_logic_vector(3 downto 0) := "1000";
 constant OP_BNE   : std_logic_vector(3 downto 0) := "0100";
+constant OP_IORD  : std_logic_vector(3 downto 0) := "0010";
 
 begin
+
+    io_read    <= '1' when (opcode = OP_IORD) and (ctrl_flush = '0') else
+                  '0';
 
     reg_dst    <= '1' when (opcode = OP_ADD) and (ctrl_flush = '0') else
                   '0';
 
     reg_write  <= '1' when (opcode = OP_ADD 
-                            or opcode = OP_LOAD) and (ctrl_flush = '0') else
+                            or opcode = OP_LOAD
+									 or opcode = OP_IORD) and (ctrl_flush = '0') else
                   '0';
     
     alu_src    <= '1' when (opcode = OP_LOAD 

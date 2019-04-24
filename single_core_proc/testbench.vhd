@@ -27,6 +27,7 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.ALL;
  
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -42,10 +43,21 @@ ARCHITECTURE behavior OF testbench IS
     COMPONENT pipelined_core
     PORT(
          reset : IN  std_logic;
-         clk : IN  std_logic
+         clk : IN  std_logic;
+			io_data : IN std_logic_vector(7 downto 0);
+			io_next : out std_logic
         );
     END COMPONENT;
     
+    COMPONENT io_reg
+    PORT( 
+	      clk, reset : in std_logic;
+			write_en : in std_logic;
+			data_in : in std_logic_vector(7 downto 0);
+			data_out : out std_logic_vector(7 downto 0);
+			write_zero : out std_logic
+			);
+    END COMPONENT;
 
    --Inputs
    signal reset : std_logic := '0';
@@ -53,14 +65,66 @@ ARCHITECTURE behavior OF testbench IS
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
+	
+	--io_reg signals
+	signal sig_io_next : std_logic;
+	signal sig_write_zero : std_logic;
+	
+	--pseudo file input
+	signal sig_pattern : std_logic_vector(7 downto 0) := x"61";
+	signal sig_stream : std_logic_vector(7 downto 0) := x"FF";
+	signal sig_end_stream : std_logic_vector(7 downto 0) := x"00";
+	signal sig_io_reg_input : std_logic_vector(7 downto 0);
+	signal sig_io_reg_output : std_logic_vector(7 downto 0);
+	signal sig_curr_stream : std_logic_vector(1 downto 0);
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: pipelined_core PORT MAP (
           reset => reset,
-          clk => clk
+          clk => clk,
+			 io_data => sig_io_reg_output,
+			 io_next => sig_io_next
         );
+	
+	io: io_reg PORT MAP (
+	       clk => clk,
+			 reset => reset,
+			 write_en => sig_io_next,
+			 data_in => sig_io_reg_input,
+			 data_out => sig_io_reg_output,
+			 write_zero => sig_write_zero
+	     );
+	
+	-- IO stream selection process
+	stream_switch : process (sig_write_zero, reset)
+	begin
+		if (reset = '1') then
+			sig_curr_stream <= "00";
+		elsif (sig_write_zero'event and sig_write_zero = '1') then
+			if (sig_curr_stream = 0) then
+				sig_curr_stream <= "01";
+			elsif (sig_curr_stream = 1) then
+				sig_curr_stream <= "10";
+			end if;
+		end if;
+	end process;
+	sig_io_reg_input <= sig_pattern when sig_curr_stream = 0 else
+							  sig_stream when sig_curr_stream = 1 else
+							  sig_end_stream;
+	
+	-- file simulation
+	file_update : process (sig_io_next, clk)
+	begin
+		if (rising_edge(clk) and sig_io_next = '1') then
+			if (sig_curr_stream = 0) then
+				sig_pattern <= sig_pattern - 1;
+			elsif (sig_curr_stream = 1) then
+				sig_stream <= sig_stream - 1;
+			end if;
+		end if;
+	end process;
 
    -- Clock process definitions
    clk_process :process
@@ -80,7 +144,7 @@ BEGIN
 		reset <= '1';
 		wait for 10 ns;
 		reset <= '0';
-      wait for clk_period*100;
+      wait for clk_period*10000;
 
    end process;
 

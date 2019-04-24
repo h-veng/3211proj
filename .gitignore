@@ -20,3 +20,4 @@
 */testbench_isim_beh1.wdb
 */instruction_memory_isim_beh.exe
 */instruction_memory_stx_beh.prj
+*/io_reg_stx_beh.prj
