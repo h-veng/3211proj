@@ -49,23 +49,23 @@ begin
             
 --     noop      
 --        # no operation or to signal end of program
---        # format:  | opcode = 0 |  0   |  0   |   0    | 
+--        # format:  | opcode = 0 |  0   |  0   |  0  |  0  |
 --
 --     load  rt, rs, offset     
 --        # load data at memory location (rs + offset) into rt
---        # format:  | opcode = 1 |  rs  |  rt  | offset |
+--        # format:  | opcode = 1 |  rs  |  rt  | offset high | offset low |
 --
 --     store rt, rs, offset
 --        # store data rt into memory location (rs + offset)
---        # format:  | opcode = 3 |  rs  |  rt  | offset |
+--        # format:  | opcode = 3 |  rs  |  rt  | offset high | offset low |
 --
 --     add   rd, rs, rt
 --        # rd <- rs + rt
---        # format:  | opcode = 8 |  rs  |  rt  |   rd   |
+--        # format:  | opcode = 8 |  rs  |  rt  |   rd   |  0  |
 --		
 --		 bne   rt, rs, addr
 --        # pc <- addr when rt != rs
---        # format:  | opcode = 4 |  rs  |  rt  |  addr  |
+--        # format:  | opcode = 4 |  rs  |  rt  |  addr high  |  addr low |
 
 
             -- Pattern test program
