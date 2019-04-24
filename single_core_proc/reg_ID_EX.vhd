@@ -45,7 +45,7 @@ entity reg_ID_EX is
 			 reg_rs_in			: in 	std_logic_vector(3 downto 0);
 			 write_reg_a_in	: in  std_logic_vector(3 downto 0); --if/id Rt
 			 write_reg_b_in	: in  std_logic_vector(3 downto 0);
-			 branch_addr_in	: in  std_logic_vector(3 downto 0);
+			 branch_addr_in	: in  std_logic_vector(7 downto 0);
 			 
 			 mem_to_reg_out 	: out	std_logic;
 			 reg_write_out 	: out std_logic;
@@ -60,7 +60,7 @@ entity reg_ID_EX is
  			 reg_rs_out			: out	std_logic_vector(3 downto 0);
 			 write_reg_a_out	: out std_logic_vector(3 downto 0);
 			 write_reg_b_out	: out std_logic_vector(3 downto 0);
-			 branch_addr_out	: out  std_logic_vector(3 downto 0) );
+			 branch_addr_out	: out  std_logic_vector(7 downto 0) );
 end reg_ID_EX;
 
 architecture Behavioral of reg_ID_EX is
