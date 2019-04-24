@@ -36,6 +36,7 @@ entity reg_ID_EX is
 			 reg_write_in 		: in  std_logic;
 			 branch_in			: in  std_logic;
 			 mem_write_in 		: in  std_logic;
+			 io_read_in			: in  std_logic;
 			 alu_in				: in  std_logic;
 			 alu_src_in			: in  std_logic;
 			 reg_dst_in			: in  std_logic;
@@ -51,6 +52,7 @@ entity reg_ID_EX is
 			 reg_write_out 	: out std_logic;
 			 branch_out			: out std_logic;
 			 mem_write_out 	: out std_logic;
+			 io_read_out		: out std_logic;
 			 alu_out				: out std_logic;
 			 alu_src_out		: out std_logic;
 			 reg_dst_out		: out std_logic;
@@ -73,6 +75,7 @@ begin
 			reg_write_out <= '0';
 			branch_out <= '0';
 			mem_write_out <= '0';
+			io_read_out <= '0';
 			alu_out <= '0';
 			alu_src_out <= '0';
 			reg_dst_out <= '0';
@@ -88,6 +91,7 @@ begin
 			reg_write_out <= reg_write_in;
 			branch_out <= branch_in;
 			mem_write_out <= mem_write_in;
+			io_read_out <= io_read_in;
 			alu_out <= alu_in;
 			alu_src_out <= alu_src_in;
 			reg_dst_out <= reg_dst_in;
