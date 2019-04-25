@@ -29,6 +29,10 @@
 --        # pc <- addr when rt != rs
 --        # format:  | opcode = 4 |  rs  |  rt  |  addr  |
 --
+--     iord rt
+--        # rt <- io_data
+--        # format:  | opcode = 2 |  0   |  rt  |   0    |
+--
 -- Copyright (C) 2006 by Lih Wen Koh (lwkoh@cse.unsw.edu.au)
 -- All Rights Reserved. 
 -- 
@@ -57,7 +61,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 -- refer to design in exercise book
 entity pipelined_core is
     port ( reset  : in  std_logic;
-           clk    : in  std_logic );
+           clk    : in  std_logic;
+			  io_data: in  std_logic_vector(7 downto 0);
+			  io_next: out std_logic );
 end pipelined_core;
 
 architecture structural of pipelined_core is
@@ -107,6 +113,7 @@ end component;
 component control_unit is
     port ( opcode     : in  std_logic_vector(3 downto 0);
 			  ctrl_flush : in  std_logic;
+			  io_read    : out std_logic;
            reg_dst    : out std_logic;
            reg_write  : out std_logic;
            alu_src    : out std_logic;
@@ -140,6 +147,8 @@ end component;
 component alu_16 is
 	port ( src_a     : in  std_logic_vector(15 downto 0);
           src_b     : in  std_logic_vector(15 downto 0);
+			 io_data	  : in  std_logic_vector(7 downto 0);
+			 io_read	  : in  std_logic;
 			 alu		  : in  std_logic;
           result    : out std_logic_vector(15 downto 0);
           carry_out : out std_logic;
@@ -172,6 +181,7 @@ component reg_ID_EX is
 			 reg_write_in 		: in  std_logic;
 			 branch_in			: in  std_logic;
 			 mem_write_in 		: in  std_logic;
+			 io_read_in       : in  std_logic;
 			 alu_in				: in  std_logic;
 			 alu_src_in			: in  std_logic;
 			 reg_dst_in			: in  std_logic;
@@ -187,6 +197,7 @@ component reg_ID_EX is
 			 reg_write_out 	: out std_logic;
 			 branch_out			: out std_logic;
 			 mem_write_out 	: out std_logic;
+			 io_read_out      : out std_logic;
 			 alu_out				: out std_logic;
 			 alu_src_out		: out std_logic;
 			 reg_dst_out		: out std_logic;
@@ -329,6 +340,7 @@ signal sig_reg_dst_id			  : std_logic;
 signal sig_read_data_a_id		  : std_logic_vector(15 downto 0);
 signal sig_read_data_b_id		  : std_logic_vector(15 downto 0);
 signal sig_sign_extended_offset_id : std_logic_vector(15 downto 0);
+signal sig_io_read_id			  : std_logic;
 
 signal sig_mem_to_reg_ex		  : std_logic;
 signal sig_reg_write_ex			  : std_logic;
@@ -347,6 +359,7 @@ signal sig_write_register_ex    : std_logic_vector(3 downto 0);
 signal sig_alu_result_ex        : std_logic_vector(15 downto 0);
 signal sig_zero_ex				  : std_logic;
 signal sig_branch_addr_ex		  : std_logic_vector(7 downto 0);
+signal sig_io_read_ex			  : std_logic;
 
 signal sig_mem_to_reg_mem		  : std_logic;
 signal sig_reg_write_mem		  : std_logic;
@@ -443,6 +456,7 @@ begin
     ctrl_unit : control_unit 
     port map ( opcode     => sig_insn_id(19 downto 16),
 					ctrl_flush => sig_ctrl_flush,
+					io_read    => sig_io_read_id,
                reg_dst    => sig_reg_dst_id,
                reg_write  => sig_reg_write_id,
                alu_src    => sig_alu_src_id,
@@ -450,6 +464,7 @@ begin
 					branch	  => sig_branch_id,
                mem_write  => sig_mem_write_id,
                mem_to_reg => sig_mem_to_reg_id );
+	 io_next <= sig_io_read_id;
 	 -- end modification
 
 	 -- pipeline register id/ex
@@ -461,6 +476,7 @@ begin
 					reg_write_in 	 => sig_reg_write_id,
 					branch_in		 => sig_branch_id,
 					mem_write_in 	 => sig_mem_write_id,
+					io_read_in		 => sig_io_read_id,
 					alu_in			 => sig_alu_id,
 					alu_src_in		 => sig_alu_src_id,
 					reg_dst_in		 => sig_reg_dst_id,
@@ -476,6 +492,7 @@ begin
 					reg_write_out 	 => sig_reg_write_ex,
 					branch_out		 => sig_branch_ex,
 					mem_write_out 	 => sig_mem_write_ex,
+					io_read_out		 => sig_io_read_ex,
 					alu_out			 => sig_alu_ex,
 					alu_src_out		 => sig_alu_src_ex,
 					reg_dst_out		 => sig_reg_dst_ex,
@@ -507,6 +524,8 @@ begin
     alu : alu_16 
     port map ( src_a     => sig_alu_mux1_result_ex,
                src_b     => sig_alu_src_b,
+					io_data   => io_data,
+					io_read   => sig_io_read_ex,
 					alu		 => sig_alu_ex,
                result    => sig_alu_result_ex,
                carry_out => sig_alu_carry_out,
