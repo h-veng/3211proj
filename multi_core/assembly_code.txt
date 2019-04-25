@@ -1,0 +1,114 @@
+Project Assembly Code
+	-- Get Pattern + Get Pattern Length
+
+	/*
+	$1: const(1),
+	$2: stores io_read data
+	$3: pattern counter
+	$4: offset, i in prefix table initialisation
+	$5: pattern_char
+	$6: result
+	
+	0x40 (address 64): start of pattern
+	0x80 (address 128): start of prefix table
+	$7: j in prefix table initialisation
+	$8: pattern[j]
+	$9: const(-1)
+	*/
+
+
+	ld $1, Addr(1) 		// load $1 with constant 1
+	ld $9, addr(-1)		// load $1 with constant -1
+	add $2, $0, $0		//put zero in register $2
+	add $3, $0, $0		// put zero in register $3
+	IO_read $2		//get next value from stream
+
+	// this is storing the pattern
+	loop1:
+		store $2, $3[0x40]		// storing the value of the pattern, i think we need to shift the offset left to be in the right memory location
+		add $3, $3, $1		//add 1 to pattern counter
+		IO_read $2		//read in new value
+		bne $2, $0, loop1	//if input is not EOF character then loop
+
+	//only gets to here if it is the EOF character i.e. we have read in the whole pattern		
+
+	-- initialise the prefix table
+	add $4, $0, $0      // initialise i
+	store $0, $4[0x80]  // store zero into prefix table[0]
+	add $4, $4, $1      // set i = 1
+	add $7, $0, $0      // set j = 0
+	bne $0, $1, loop_p_check // check condition straight away
+	
+	loop_p_table:
+		bne $0, $1, special_check // jump to check condition
+		loop_special:
+			sub $7, $7, $1
+			ld $7, $7[0x80]
+			bne $0, $1, special_check
+			special_check_2:
+				ld $5, $4[0x40]      // load pattern[i]
+				ld $8, $7[0x40]      // load pattern[j]
+				bne $5, $8, loop_special     // check pattern[i] != pattern[j]
+				bne $0, $1, equal_check
+			special_check:
+				bne $7, $0, special_check_2     // check j>0
+		
+		equal_check:
+			ld $5, $4[0x40]
+			ld $8, $7[0x40]
+			bne $5, $8, common
+			add $7, $7, $1
+		
+		common:
+			store $7, $4[0x80]
+			add $4, $4, $1
+		
+		loop_p_check:
+			bne $4, $3, loop_p_table
+
+	
+	add $4, $0, $0		//zero the offset counter		
+	add $6, $0, $0		//zero the result (N)
+
+	io_read $2		//get new input from stream
+	bne $2, $0, loop2	//if input stream is not empty then start loop2 
+	bne $0, $1, exit	//else if the input stream was empty then jump to exit
+
+	loop2:
+		ld $5, $4[0x40]		//load in the current pattern value from data mem
+		bne $2, $5, else	//if the latest bit of the stream doesnt match the pattern then branch
+
+		add $4, $4, $1		//if it is a match then increment the offset
+		bne $0, $1, check	//jump to check
+
+
+		else:
+			bne $0, $1, special2_check    // jump to check condition
+			loop2_special:
+				sub $4, $4, $1    // offset_counter--
+				ld $4, $4[0x80]   // set new offset_counter based on prefix table
+				bne $0, $1, special2_check    // check again
+				special2_check_2:
+					ld $5, $4[0x40]      // load pattern[offset_counter]
+					bne $5, $2, loop2_special     // check pattern[offset_counter] != stream_input
+					bne $0, $1, equal_check_2
+				special2_check:
+					bne $4, $0, special2_check_2      // check offset_counter>0
+			
+			equal_check_2:
+				ld $5, $4[0x40]
+				bne $5, $2, next_char
+				add $4, $4, $1
+				bne $0, $1, next_char
+
+		check:
+			bne $4, $3, next_char		//if we got a match then check if offset == pattern length, if not equal then get next char	
+			add $6, $6, $1			//increment the result register
+			add $4, $0, $0			//zero the offset register
+
+		next_char:
+			io_read $2			//get next value from stream
+			bne $2, $0, loop2		//if next value is null then we go to exit, otherwise we branch back to loop2
+	 
+	exit:
+
