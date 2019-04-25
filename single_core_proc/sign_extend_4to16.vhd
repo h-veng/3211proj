@@ -23,7 +23,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity sign_extend_4to16 is
-    port ( data_in  : in  std_logic_vector(3 downto 0);
+    port ( data_in  : in  std_logic_vector(7 downto 0);
            data_out : out std_logic_vector(15 downto 0) );
 end sign_extend_4to16;
 
@@ -33,12 +33,12 @@ begin
     
     sign_extend : process ( data_in ) is
     begin
-        data_out(3 downto 0) <= data_in(3 downto 0);
+        data_out(7 downto 0) <= data_in(7 downto 0);
 
         -- the extended bits take on the value of the most significant
         -- bit (MSB) of data_in
-        for i in 15 downto 4 loop
-            data_out(i) <= data_in(3);
+        for i in 15 downto 8 loop
+            data_out(i) <= data_in(7);
         end loop;
 
     end process;
