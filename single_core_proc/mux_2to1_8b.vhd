@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: UNSW
+-- Engineer: Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638)
 -- 
 -- Create Date:    08:16:54 04/24/2019 
 -- Design Name: 

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: UNSW
+-- Engineer: Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638)
 -- 
 -- Create Date:    05:36:29 04/10/2019 
 -- Design Name: 
@@ -32,20 +32,20 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --use UNISIM.VComponents.all;
 
 entity alu_op_2_mux is
-    Port ( reg : in  STD_LOGIC_VECTOR (15 downto 0);
-			  mem_forward: in STD_LOGIC_VECTOR (15 downto 0);
-			  wb_forward: in STD_LOGIC_VECTOR (15 downto 0);
-			  output: out STD_LOGIC_VECTOR (15 downto 0);
-			  mux_controller: in STD_LOGIC_VECTOR (1 downto 0));
+    port ( reg            : in  STD_LOGIC_VECTOR (15 downto 0);
+           mem_forward    : in  STD_LOGIC_VECTOR (15 downto 0);
+           wb_forward     : in  STD_LOGIC_VECTOR (15 downto 0);
+           output         : out STD_LOGIC_VECTOR (15 downto 0);
+           mux_controller : in  STD_LOGIC_VECTOR (1 downto 0));
 end alu_op_2_mux;
 
 architecture Behavioral of alu_op_2_mux is
 begin
 
-	output <= reg when mux_controller = "00" else
-				mem_forward when mux_controller = "01" else
-				wb_forward when mux_controller = "10" else
-				"0000000000000000";
+    output <= reg when mux_controller = "00" else
+              mem_forward when mux_controller = "01" else
+              wb_forward when mux_controller = "10" else
+              "0000000000000000";
 
 end Behavioral;
 

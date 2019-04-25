@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638) for COMP3211
 -- 
 -- Create Date:    23:26:50 03/27/2019 
 -- Design Name: 
@@ -30,55 +30,55 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity reg_EX_MEM is
-	port ( clk, reset  		: in  std_logic;
-			 flush				: in  std_logic;
-			 mem_to_reg_in 	: in	std_logic;
-			 reg_write_in 		: in  std_logic;
-			 branch_in			: in  std_logic;
-			 mem_write_in 		: in  std_logic;
-			 zero_in				: in  std_logic;
-			 alu_result_in    : in  std_logic_vector(15 downto 0);
-			 read_data_b_in   : in  std_logic_vector(15 downto 0);
-			 write_reg_in	: in  std_logic_vector(3 downto 0);
-			 branch_addr_in	: in  std_logic_vector(7 downto 0);
-			 
-			 mem_to_reg_out 	: out	std_logic;
-			 reg_write_out 	: out std_logic;
-			 branch_out			: out std_logic;
-			 mem_write_out 	: out std_logic;
-			 zero_out			: out std_logic;
-			 alu_result_out    : out  std_logic_vector(15 downto 0);
-			 read_data_b_out  : out std_logic_vector(15 downto 0);
-			 write_reg_out	: out std_logic_vector(3 downto 0);
-			 branch_addr_out	: out  std_logic_vector(7 downto 0) );
+    port ( clk, reset       : in  std_logic;
+           flush            : in  std_logic;
+           mem_to_reg_in    : in  std_logic;
+           reg_write_in     : in  std_logic;
+           branch_in        : in  std_logic;
+           mem_write_in     : in  std_logic;
+           zero_in          : in  std_logic;
+           alu_result_in    : in  std_logic_vector(15 downto 0);
+           read_data_b_in   : in  std_logic_vector(15 downto 0);
+           write_reg_in     : in  std_logic_vector(3 downto 0);
+           branch_addr_in   : in  std_logic_vector(7 downto 0);
+          
+           mem_to_reg_out   : out std_logic;
+           reg_write_out    : out std_logic;
+           branch_out       : out std_logic;
+           mem_write_out    : out std_logic;
+           zero_out         : out std_logic;
+           alu_result_out   : out std_logic_vector(15 downto 0);
+           read_data_b_out  : out std_logic_vector(15 downto 0);
+           write_reg_out    : out std_logic_vector(3 downto 0);
+           branch_addr_out  : out std_logic_vector(7 downto 0) );
 end reg_EX_MEM;
 
 architecture Behavioral of reg_EX_MEM is
 begin
 
-	update_process: process ( reset, clk ) is
-	begin
-		if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
-			mem_to_reg_out <= '0';
-			reg_write_out <= '0';
-			branch_out <= '0';
-			mem_write_out <= '0';
-			zero_out <= '0';
-			alu_result_out <= (others => '0');
-			read_data_b_out <= (others => '0');
-			write_reg_out <= (others => '0');
-			branch_addr_out <= (others => '0');
-		elsif (rising_edge(clk)) then
-			mem_to_reg_out <= mem_to_reg_in;
-			reg_write_out <= reg_write_in;
-			branch_out <= branch_in;
-			mem_write_out <= mem_write_in;
-			zero_out <= zero_in;
-			alu_result_out <= alu_result_in;
-			read_data_b_out <= read_data_b_in;
-			write_reg_out <= write_reg_in;
-			branch_addr_out <= branch_addr_in;
-		end if;
-	end process;
-	
+    update_process: process ( reset, clk ) is
+    begin
+        if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
+            mem_to_reg_out <= '0';
+            reg_write_out <= '0';
+            branch_out <= '0';
+            mem_write_out <= '0';
+            zero_out <= '0';
+            alu_result_out <= (others => '0');
+            read_data_b_out <= (others => '0');
+            write_reg_out <= (others => '0');
+            branch_addr_out <= (others => '0');
+        elsif (rising_edge(clk)) then
+            mem_to_reg_out <= mem_to_reg_in;
+            reg_write_out <= reg_write_in;
+            branch_out <= branch_in;
+            mem_write_out <= mem_write_in;
+            zero_out <= zero_in;
+            alu_result_out <= alu_result_in;
+            read_data_b_out <= read_data_b_in;
+            write_reg_out <= write_reg_in;
+            branch_addr_out <= branch_addr_in;
+        end if;
+    end process;
+   
 end Behavioral;

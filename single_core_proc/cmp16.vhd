@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: UNSW
--- Engineer: Henry Veng z5113239
+-- Engineer: Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638)
 -- 
 -- Create Date:    23:56:26 03/20/2019 
 -- Design Name: 
@@ -31,36 +31,36 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- 16 bit comparator
 entity cmp16 is
-	port ( src_a     : in  std_logic_vector(15 downto 0);
-          src_b     : in  std_logic_vector(15 downto 0);
-          axorb     : out std_logic_vector(15 downto 0);
-          zero      : out std_logic );
+    port ( src_a     : in  std_logic_vector(15 downto 0);
+           src_b     : in  std_logic_vector(15 downto 0);
+           axorb     : out std_logic_vector(15 downto 0);
+           zero      : out std_logic );
 end cmp16;
 
 architecture Behavioral of cmp16 is
-	signal sig_axorb : std_logic_vector(15 downto 0);
+    signal sig_axorb : std_logic_vector(15 downto 0);
 begin
-	comparison: for i in 0 to 15 generate
-		sig_axorb(i) <= src_a(i) xor src_b(i);
-	end generate;
-	
-	axorb <= sig_axorb;
-	
-	zero <= not ( sig_axorb(0)
-			  or sig_axorb(1)
-			  or sig_axorb(2)
-			  or sig_axorb(3)
-			  or sig_axorb(4)
-			  or sig_axorb(5)
-			  or sig_axorb(6)
-			  or sig_axorb(7)
-			  or sig_axorb(8)
-			  or sig_axorb(9)
-			  or sig_axorb(10)
-			  or sig_axorb(11)
-			  or sig_axorb(12)
-			  or sig_axorb(13)
-			  or sig_axorb(14)
-			  or sig_axorb(15) );
+    comparison: for i in 0 to 15 generate
+        sig_axorb(i) <= src_a(i) xor src_b(i);
+    end generate;
+    
+    axorb <= sig_axorb;
+    
+    zero <= not ( sig_axorb(0)
+                  or sig_axorb(1)
+                  or sig_axorb(2)
+                  or sig_axorb(3)
+                  or sig_axorb(4)
+                  or sig_axorb(5)
+                  or sig_axorb(6)
+                  or sig_axorb(7)
+                  or sig_axorb(8)
+                  or sig_axorb(9)
+                  or sig_axorb(10)
+                  or sig_axorb(11)
+                  or sig_axorb(12)
+                  or sig_axorb(13)
+                  or sig_axorb(14)
+                  or sig_axorb(15) );
 end Behavioral;
 

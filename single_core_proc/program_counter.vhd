@@ -19,6 +19,7 @@
 -- noncommercial research, and noncommercial scholarship purposes provided 
 -- that this notice in its entirety accompanies all copies.
 --
+-- Modifications by Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638) for COMP3211
 ---------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -28,7 +29,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity program_counter is
     port ( reset    : in  std_logic;
            clk      : in  std_logic;
-			  pc_write : in  std_logic;
+           pc_write : in  std_logic;
            addr_in  : in  std_logic_vector(7 downto 0);
            addr_out : out std_logic_vector(7 downto 0) );
 end program_counter;

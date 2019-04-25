@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: UNSW
+-- Engineer: Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638) for COMP3211
 -- 
 -- Create Date:    23:26:50 03/27/2019 
 -- Design Name: 
@@ -30,38 +30,38 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity reg_MEM_WB is
-	port ( clk, reset  		: in  std_logic;
-			 mem_to_reg_in 	: in	std_logic;
-			 reg_write_in 		: in  std_logic;
-			 mem_data_in		: in  std_logic_vector(15 downto 0);
-			 alu_result_in    : in  std_logic_vector(15 downto 0);
-			 write_reg_in		: in  std_logic_vector(3 downto 0);
-			 
-			 mem_to_reg_out 	: out	std_logic;
-			 reg_write_out 	: out std_logic;
-			 mem_data_out		: out std_logic_vector(15 downto 0);
-			 alu_result_out	: out  std_logic_vector(15 downto 0);
-			 write_reg_out		: out std_logic_vector(3 downto 0) );
+    port ( clk, reset       : in  std_logic;
+           mem_to_reg_in    : in  std_logic;
+           reg_write_in     : in  std_logic;
+           mem_data_in      : in  std_logic_vector(15 downto 0);
+           alu_result_in    : in  std_logic_vector(15 downto 0);
+           write_reg_in     : in  std_logic_vector(3 downto 0);
+             
+           mem_to_reg_out   : out std_logic;
+           reg_write_out    : out std_logic;
+           mem_data_out     : out std_logic_vector(15 downto 0);
+           alu_result_out   : out std_logic_vector(15 downto 0);
+           write_reg_out    : out std_logic_vector(3 downto 0) );
 end reg_MEM_WB;
 
 architecture Behavioral of reg_MEM_WB is
 begin
 
-	update_process: process ( reset, clk ) is
-	begin
-		if (reset = '1') then
-			mem_to_reg_out <= '0';
-			reg_write_out <= '0';
-			mem_data_out <= (others => '0');
-			alu_result_out <= (others => '0');
-			write_reg_out <= (others => '0');
-		elsif (rising_edge(clk)) then
-			mem_to_reg_out <= mem_to_reg_in;
-			reg_write_out <= reg_write_in;
-			mem_data_out <= mem_data_in;
-			alu_result_out <= alu_result_in;
-			write_reg_out <= write_reg_in;
-		end if;
-	end process;
-	
+    update_process: process ( reset, clk ) is
+    begin
+        if (reset = '1') then
+            mem_to_reg_out <= '0';
+            reg_write_out <= '0';
+            mem_data_out <= (others => '0');
+            alu_result_out <= (others => '0');
+            write_reg_out <= (others => '0');
+        elsif (rising_edge(clk)) then
+            mem_to_reg_out <= mem_to_reg_in;
+            reg_write_out <= reg_write_in;
+            mem_data_out <= mem_data_in;
+            alu_result_out <= alu_result_in;
+            write_reg_out <= write_reg_in;
+        end if;
+    end process;
+    
 end Behavioral;
