@@ -28,6 +28,9 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_unsigned.ALL;
+USE std.textio.ALL;
+USE ieee.std_logic_textio.ALL;
+USE ieee.std_logic_arith.ALL;
  
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -70,13 +73,16 @@ ARCHITECTURE behavior OF testbench IS
 	signal sig_io_next : std_logic;
 	signal sig_write_zero : std_logic;
 	
-	--pseudo file input
-	signal sig_pattern : std_logic_vector(7 downto 0) := x"61";
+	--file input
+	signal sig_pattern : std_logic_vector(7 downto 0);
 	signal sig_stream : std_logic_vector(7 downto 0) := x"FF";
 	signal sig_end_stream : std_logic_vector(7 downto 0) := x"00";
 	signal sig_io_reg_input : std_logic_vector(7 downto 0);
 	signal sig_io_reg_output : std_logic_vector(7 downto 0);
 	signal sig_curr_stream : std_logic_vector(1 downto 0);
+	
+	file pattern : text;
+	file stream : text;
  
 BEGIN
  
@@ -104,8 +110,10 @@ BEGIN
 			sig_curr_stream <= "00";
 		elsif (sig_write_zero'event and sig_write_zero = '1') then
 			if (sig_curr_stream = 0) then
+				file_close(pattern);
 				sig_curr_stream <= "01";
 			elsif (sig_curr_stream = 1) then
+				file_close(stream);
 				sig_curr_stream <= "10";
 			end if;
 		end if;
@@ -114,14 +122,49 @@ BEGIN
 							  sig_stream when sig_curr_stream = 1 else
 							  sig_end_stream;
 	
-	-- file simulation
-	file_update : process (sig_io_next, clk)
+	-- file process
+	file_update : process (reset, sig_io_next, clk)
+		variable line_p: line;
+		variable line_s: line;
+		variable char_p: character;
+		variable char_s: character;
 	begin
-		if (rising_edge(clk) and sig_io_next = '1') then
+		if rising_edge(reset) then
+			-- open files
+			file_open(pattern, "pattern.txt", read_mode);
+			file_open(stream, "stream.txt", read_mode);
+			-- read the first line
+			readline(pattern, line_p);
+			readline(stream, line_s);
+			-- read the first character of pattern
+			if (line_p'length > 0) then
+				read(line_p, char_p);
+				sig_pattern <= conv_std_logic_vector(character'pos(char_p), 8);
+			else
+				sig_pattern <= x"00";
+			end if;
+			-- read the first character of stream
+			if (line_s'length > 0) then
+				read(line_s, char_s);
+				sig_stream <= conv_std_logic_vector(character'pos(char_s), 8);
+			else
+				sig_stream <= x"00";
+			end if;
+		elsif (rising_edge(clk) and sig_io_next = '1') then
 			if (sig_curr_stream = 0) then
-				sig_pattern <= sig_pattern - 1;
+				if (line_p'length > 0) then
+					read(line_p, char_p);
+					sig_pattern <= conv_std_logic_vector(character'pos(char_p), 8);
+				else
+					sig_pattern <= x"00";
+				end if;
 			elsif (sig_curr_stream = 1) then
-				sig_stream <= sig_stream - 1;
+				if (line_s'length > 0) then
+					read(line_s, char_s);
+					sig_stream <= conv_std_logic_vector(character'pos(char_s), 8);
+				else
+					sig_stream <= x"00";
+				end if;
 			end if;
 		end if;
 	end process;
