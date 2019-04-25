@@ -17,6 +17,7 @@
 -- noncommercial research, and noncommercial scholarship purposes provided 
 -- that this notice in its entirety accompanies all copies.
 --
+-- Modification by Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638) for COMP3211
 ---------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -53,18 +54,16 @@ begin
             -- initial values of the data memory : reset to zero 
             
             var_data_mem(0)  := X"0001";
-            -- Begin pattern
-            -- For faux IOread the hardcoded pattern starts here
-            var_data_mem(1)  := X"0061";  
-            var_data_mem(2)  := X"0062";   
-            var_data_mem(3)  := X"0063";   
+            var_data_mem(1)  := X"FFFF";  
+            var_data_mem(2)  := X"0000";   
+            var_data_mem(3)  := X"0000";   
             var_data_mem(4)  := X"0000";
             var_data_mem(5)  := X"0000";
             var_data_mem(6)  := X"0000";
             var_data_mem(7)  := X"0000";
-            var_data_mem(8)  := X"0061";
-            var_data_mem(9)  := X"0062";
-            var_data_mem(10)  := X"0063";
+            var_data_mem(8)  := X"0000";
+            var_data_mem(9)  := X"0000";
+            var_data_mem(10)  := X"0000";
             var_data_mem(11)  := X"0000";
             var_data_mem(12)  := X"0000";
             var_data_mem(13)  := X"0000";
@@ -118,8 +117,8 @@ begin
             var_data_mem(61)  := X"0000";
             var_data_mem(62)  := X"0000";
             var_data_mem(63)  := X"0000";
+            -- begin pattern
             var_data_mem(64)  := X"0000";
-            -- End pattern
             var_data_mem(65)  := X"0000";
             var_data_mem(66)  := X"0000";
             var_data_mem(67)  := X"0000";
@@ -183,6 +182,8 @@ begin
             var_data_mem(125)  := X"0000";
             var_data_mem(126)  := X"0000";
             var_data_mem(127)  := X"0000";
+            -- end pattern
+            -- begin prefix table
             var_data_mem(128)  := X"0000";
             var_data_mem(129)  := X"0000";
             var_data_mem(130)  := X"0000";
@@ -247,6 +248,7 @@ begin
             var_data_mem(189)  := X"0000";
             var_data_mem(190)  := X"0000";
             var_data_mem(191)  := X"0000";
+            -- end prefix table
             var_data_mem(192)  := X"0000";
             var_data_mem(193)  := X"0000";
             var_data_mem(194)  := X"0000";

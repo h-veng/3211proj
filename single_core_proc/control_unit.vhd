@@ -43,17 +43,17 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Modifications by Henry Veng
 -- added 2 outputs: one for selecting alu operation, 
---					     the other for selecting branch
+--                         the other for selecting branch
 -- also added op_bne
 entity control_unit is
     port ( opcode     : in  std_logic_vector(3 downto 0);
-			  ctrl_flush : in  std_logic;
-			  io_read    : out std_logic;
+           ctrl_flush : in  std_logic;
+           io_read    : out std_logic;
            reg_dst    : out std_logic;
            reg_write  : out std_logic;
            alu_src    : out std_logic;
-			  alu			 : out std_logic;
-			  branch		 : out std_logic;
+           alu        : out std_logic;
+           branch     : out std_logic;
            mem_write  : out std_logic;
            mem_to_reg : out std_logic );
 end control_unit;
@@ -76,17 +76,17 @@ begin
 
     reg_write  <= '1' when (opcode = OP_ADD 
                             or opcode = OP_LOAD
-									 or opcode = OP_IORD) and (ctrl_flush = '0') else
+                                     or opcode = OP_IORD) and (ctrl_flush = '0') else
                   '0';
     
     alu_src    <= '1' when (opcode = OP_LOAD 
                            or opcode = OP_STORE) and (ctrl_flush = '0') else
                   '0';
-	
+    
     alu        <= '1' when (opcode = OP_BNE) and (ctrl_flush = '0') else
                   '0';
 
-	 branch     <= '1' when (opcode = OP_BNE) and (ctrl_flush = '0') else
+    branch     <= '1' when (opcode = OP_BNE) and (ctrl_flush = '0') else
                   '0';
     
     mem_write  <= '1' when (opcode = OP_STORE) and (ctrl_flush = '0') else

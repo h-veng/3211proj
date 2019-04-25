@@ -16,6 +16,7 @@
 -- noncommercial research, and noncommercial scholarship purposes provided 
 -- that this notice in its entirety accompanies all copies.
 --
+-- Modified by Henry Veng(z5113239), Richie Trang(z5061606), Jack Scott(z5020638) for COMP3211
 ---------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
