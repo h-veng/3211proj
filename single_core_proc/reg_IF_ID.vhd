@@ -33,8 +33,8 @@ entity reg_IF_ID is
 	port ( clk, reset : in  std_logic;
 			 write_en	: in  std_logic;
 			 flush		: in  std_logic;
-			 instr_in   : in  std_logic_vector (15 downto 0);
-			 instr_out  : out std_logic_vector (15 downto 0) );
+			 instr_in   : in  std_logic_vector (19 downto 0);
+			 instr_out  : out std_logic_vector (19 downto 0) );
 end reg_IF_ID;
 
 architecture Behavioral of reg_IF_ID is

@@ -31,7 +31,7 @@ end mux_2to1_4b;
 
 architecture structural of mux_2to1_4b is
 
-component mux_2to1_1b is
+component mux_2to1_1b is 
     port ( mux_select : in  std_logic;
            data_a     : in  std_logic;
            data_b     : in  std_logic;

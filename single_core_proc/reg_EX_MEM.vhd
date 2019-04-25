@@ -40,7 +40,7 @@ entity reg_EX_MEM is
 			 alu_result_in    : in  std_logic_vector(15 downto 0);
 			 read_data_b_in   : in  std_logic_vector(15 downto 0);
 			 write_reg_in	: in  std_logic_vector(3 downto 0);
-			 branch_addr_in	: in  std_logic_vector(3 downto 0);
+			 branch_addr_in	: in  std_logic_vector(7 downto 0);
 			 
 			 mem_to_reg_out 	: out	std_logic;
 			 reg_write_out 	: out std_logic;
@@ -50,7 +50,7 @@ entity reg_EX_MEM is
 			 alu_result_out    : out  std_logic_vector(15 downto 0);
 			 read_data_b_out  : out std_logic_vector(15 downto 0);
 			 write_reg_out	: out std_logic_vector(3 downto 0);
-			 branch_addr_out	: out  std_logic_vector(3 downto 0) );
+			 branch_addr_out	: out  std_logic_vector(7 downto 0) );
 end reg_EX_MEM;
 
 architecture Behavioral of reg_EX_MEM is
