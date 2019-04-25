@@ -45,7 +45,6 @@ begin
   
     begin
         if (reset = '1') then
-          
             
 --     noop      
 --        # no operation or to signal end of program
