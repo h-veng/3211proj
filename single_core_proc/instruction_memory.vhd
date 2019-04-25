@@ -93,8 +93,8 @@ begin
 
             --loop 1: Get the pattern from stream
             -- var_insn_mem(4)  := X"33201";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 1) 
-            var_insn_mem(4)  := X"33205";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 5)         //remove when IOread is added 
-            var_insn_mem(5)  := X"81330";    --increment pattern counter (add register $0 and $1 and store in $3)
+            var_insn_mem(4)  := X"33240";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 5) 
+            var_insn_mem(5)  := X"81330";    --increment pattern counter (add register $3 and $1 and store in $3)
             --var_insn_mem(6)  := X"0000";    --do an IO read
             var_insn_mem(6)  := X"20200";	   -- ioread
             var_insn_mem(7)  := X"42004";    --if input is not EOF character then loop (bne $2, $0, loop 1)
@@ -107,7 +107,7 @@ begin
             var_insn_mem(12) := X"40117";    --if was empty then jump to exit. (bne $0, $1, exit)                                               
 
             --loop 2
-            var_insn_mem(13) := X"14501";    --load next pattern value (ld $5, $4[1])
+            var_insn_mem(13) := X"14540";    --load next pattern value (ld $5, $4[1])
             var_insn_mem(14) := X"42511";    --if the input does not match pattern then jump to else (bne $2, $5, else)
             var_insn_mem(15) := X"81440";    --if it is a match then increment offset (add $4, $4, $1)
             var_insn_mem(16)  := X"40112";   --if we are here then it was a match, jump to check (bne $0, $1, check)
