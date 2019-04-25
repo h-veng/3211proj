@@ -62,9 +62,9 @@ begin
             var_data_mem(5)  := X"0000";
             var_data_mem(6)  := X"0000";
             var_data_mem(7)  := X"0000";
-            var_data_mem(8)  := X"0000";
-            var_data_mem(9)  := X"0000";
-            var_data_mem(10)  := X"0000";
+            var_data_mem(8)  := X"0061";
+            var_data_mem(9)  := X"0062";
+            var_data_mem(10)  := X"0063";
             var_data_mem(11)  := X"0000";
             var_data_mem(12)  := X"0000";
             var_data_mem(13)  := X"0000";
