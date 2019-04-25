@@ -99,7 +99,7 @@ begin
             var_insn_mem(8)  := X"80040";    --put 0 into $4 (add $0 and $0 and store result in $4)
             var_insn_mem(9)  := X"80060";    --put 0 into $6 (add $0 and $0 and store result in $6)
             --var_insn_mem(10) := X"0000";  --do an IO read
-            var_insn_mem(10) := X"13201";    --this is a faux IO read (load datamem at location $3 + offset 1 into register $2)         //remove when IOread is added
+            var_insn_mem(10) := X"13205";    --this is a faux IO read (load datamem at location $3 + offset 1 into register $2)         //remove when IOread is added
             var_insn_mem(11) := X"4200D";    --if input stream is not empty then jump to loop 2 (bne $2, $0, loop2)
             var_insn_mem(12) := X"40117";    --if was empty then jump to exit. (bne $0, $1, exit)                                               
 
@@ -118,7 +118,7 @@ begin
             var_insn_mem(20)  := X"80040";   --zero the offset register (add $4, $0, $0)
 
             --next_char: Ready for next char in stream
-            var_insn_mem(21)  := X"00000";    --do an IOread
+            var_insn_mem(21)  := X"13206";    --do an IOread
             var_insn_mem(22)  := X"4200D";    --if new input is not null then jump to loop2 (bne $2, $0, loop2)
             
             
