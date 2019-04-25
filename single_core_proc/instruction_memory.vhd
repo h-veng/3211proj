@@ -27,13 +27,13 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity instruction_memory is
     port ( reset    : in  std_logic;
            clk      : in  std_logic;
-           addr_in  : in  std_logic_vector(3 downto 0);
-           insn_out : out std_logic_vector(15 downto 0) );
+           addr_in  : in  std_logic_vector(7 downto 0);
+           insn_out : out std_logic_vector(19 downto 0) );
 end instruction_memory;
 
 architecture behavioral of instruction_memory is
 
-type mem_array is array(0 to 15) of std_logic_vector(15 downto 0);
+type mem_array is array(0 to 255) of std_logic_vector(255 downto 0);
 signal sig_insn_mem : mem_array;
 
 begin

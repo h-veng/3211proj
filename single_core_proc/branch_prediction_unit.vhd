@@ -31,10 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity branch_prediction_unit is
 	port ( insn_op_code : in std_logic_vector(3 downto 0);
-			 imm_in : in std_logic_vector(3 downto 0);
-			 next_addr_in : in std_logic_vector(3 downto 0);
-			 imm_out : out std_logic_vector(3 downto 0);
-			 next_addr_out : out std_logic_vector(3 downto 0) );
+			 imm_in : in std_logic_vector(7 downto 0);
+			 next_addr_in : in std_logic_vector(7 downto 0);
+			 imm_out : out std_logic_vector(7 downto 0);
+			 next_addr_out : out std_logic_vector(7 downto 0) );
 end branch_prediction_unit;
 
 architecture Behavioral of branch_prediction_unit is
