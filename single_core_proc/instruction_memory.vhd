@@ -81,130 +81,137 @@ begin
                 -- $4 = offset
                 -- $5 = pattern_char
                 -- $6 = result
+                -- 0x40 = start of pattern
+                -- 0x80 = start of prefix table
+                -- $7 = j in prefix table initialisation
+                -- $8 = pattern[j]
+                -- $9 = 0xffff = -1
 
-            -- Data memory setup
-                -- data(0) :1 as default
-                -- data(1-3) :these 3 words used to store the pattern, will be 64 words when we expand
 
-            var_insn_mem(0)  := X"10100";    --put 1 in $1 (load $1 with constant 1 from data memory)
-            var_insn_mem(1)  := X"80020";    --put 0 into $2 (add $0 and $0 and store result in $2)
-            var_insn_mem(2)  := X"80030";    --put 0 into $3 (add $0 and $0 and store result in $3)
-            --var_insn_mem(3)  := X"0000";    --do an IO read
-            var_insn_mem(3)  := X"20200";    -- io read
-
-            --loop 1: Get the pattern from stream
-            -- var_insn_mem(4)  := X"33201";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 1) 
-            var_insn_mem(4)  := X"33240";    --store the value from $2 in data mem (store val of $2 at mem location $3 offset by 5) 
-            var_insn_mem(5)  := X"81330";    --increment pattern counter (add register $3 and $1 and store in $3)
-            --var_insn_mem(6)  := X"0000";    --do an IO read
-            var_insn_mem(6)  := X"20200";       -- ioread
-            var_insn_mem(7)  := X"42004";    --if input is not EOF character then loop (bne $2, $0, loop 1)
+            var_insn_mem(0)  := X"10100"; --ld $1, addr(1)
+            var_insn_mem(1)  := X"10901"; --ld $9, addr(-1)
+            var_insn_mem(2)  := X"80020"; --add $2, $0, $0
+            var_insn_mem(3)  := X"80030"; --add $3, $0, $0
+            var_insn_mem(4)  := X"20200"; --iord $2
             
-            var_insn_mem(8)  := X"80040";    --put 0 into $4 (add $0 and $0 and store result in $4)
-            var_insn_mem(9)  := X"80060";    --put 0 into $6 (add $0 and $0 and store result in $6)
-            --var_insn_mem(10) := X"0000";  --do an IO read
-            var_insn_mem(10) := X"20200";    -- ioread
-            var_insn_mem(11) := X"4200D";    --if input stream is not empty then jump to loop 2 (bne $2, $0, loop2)
-            var_insn_mem(12) := X"40117";    --if was empty then jump to exit. (bne $0, $1, exit)                                               
-
-            --loop 2
-            var_insn_mem(13) := X"14540";    --load next pattern value (ld $5, $4[1])
-            var_insn_mem(14) := X"42511";    --if the input does not match pattern then jump to else (bne $2, $5, else)
-            var_insn_mem(15) := X"81440";    --if it is a match then increment offset (add $4, $4, $1)
-            var_insn_mem(16)  := X"40112";   --if we are here then it was a match, jump to check (bne $0, $1, check)
+            --loop1
+            var_insn_mem(5)  := X"33240"; --store $2, $3[0x40]
+            var_insn_mem(6)  := X"81330"; --add $3, $3, $1
+            var_insn_mem(7)  := X"20200"; --iord $2
+            var_insn_mem(8)  := X"42005"; --bne $2, $0, loop
             
-            --else: The case of non-matching pattern
-            var_insn_mem(17)  := X"80040";   --zero the offset (add $4, $0, $0    ) 
+            var_insn_mem(9)  := X"80040"; --add $4, $0, $0
+            var_insn_mem(10) := X"34080"; --store $0, $4[0x80]
+            var_insn_mem(11) := X"84140"; --add $4, $4, $1
+            var_insn_mem(12) := X"80070"; --add $7, $0, $0
+            var_insn_mem(13) := X"4011D"; --bne $0, $1, loop_p_check
             
-            --check: Where we see if the whole pattern was matched
-            var_insn_mem(18)  := X"44315";   --if offset is not equal to pattern length then jump to next_char (bne $4, $3, next_char)
-            var_insn_mem(19)  := X"81660";   --if it IS equal then increment result counter (add $6, $6, $1)
-            var_insn_mem(20)  := X"80040";   --zero the offset register (add $4, $0, $0)
-
-            --next_char: Ready for next char in stream
-            var_insn_mem(21)  := X"20200";    --do an IOread
-            var_insn_mem(22)  := X"4200D";    --if new input is not null then jump to loop2 (bne $2, $0, loop2)
+            --loop_p_table
+            var_insn_mem(14) := X"40116"; --bne $0, $1, special_check
+                --loop_special
+            var_insn_mem(15) := X"87970"; --add $7, $7, $9
+            var_insn_mem(16) := X"17780"; --ld $7, $7[0x80]
+            var_insn_mem(17) := X"40116"; --bne $0, $1, special_check
+                    --special_check_2
+            var_insn_mem(18) := X"14540"; --ld $5, $4[0x40]
+            var_insn_mem(19) := X"17840"; --ld $8, $7[0x40]
+            var_insn_mem(20) := X"4580F"; --bne $5, $8, loop_special
+            var_insn_mem(21) := X"40117"; --bne $0, $1, equal_check
+                    --special_check
+            var_insn_mem(22) := X"47012"; --bne $7, $0, special_check_2
+                --equal_check
+            var_insn_mem(23) := X"14540"; --ld $5, $4[0x40]
+            var_insn_mem(24) := X"17840"; --ld $8, $7[0x40]
+            var_insn_mem(25) := X"4581B"; --bne $5, $8, common
+            var_insn_mem(26) := X"87170"; --add $7, $7, $1
+                --common
+            var_insn_mem(27) := X"34780"; --store $7, $4[80]
+            var_insn_mem(28) := X"84140"; --add $4, $4, $1
+                --loop_p_check
+            var_insn_mem(29) := X"4430E"; --bne $4, $3, loop_p_table
             
             
-            --exit: Situation where next input is null i.e. stream finished
-
-            var_insn_mem(23)  := X"00000";
-            var_insn_mem(24)  := X"00000";
-            var_insn_mem(25)  := X"00000";
-            var_insn_mem(26)  := X"00000";
-            var_insn_mem(27)  := X"00000";
-            var_insn_mem(28)  := X"00000";
-            var_insn_mem(29)  := X"00000";
-            var_insn_mem(30)  := X"00000";
-            var_insn_mem(31)  := X"00000";
-            var_insn_mem(32)  := X"00000";
-            var_insn_mem(33)  := X"00000";
-            var_insn_mem(34)  := X"00000";
-            var_insn_mem(35)  := X"00000";
-            var_insn_mem(36)  := X"00000";
-            var_insn_mem(37)  := X"00000";
-            var_insn_mem(38)  := X"00000";
-            var_insn_mem(39)  := X"00000";
-            var_insn_mem(40)  := X"00000";
-            var_insn_mem(41)  := X"00000";
-            var_insn_mem(42)  := X"00000";
-            var_insn_mem(43)  := X"00000";
-            var_insn_mem(44)  := X"00000";
-            var_insn_mem(45)  := X"00000";
-            var_insn_mem(46)  := X"00000";
-            var_insn_mem(47)  := X"00000";
-            var_insn_mem(48)  := X"00000";
-            var_insn_mem(49)  := X"00000";
-            var_insn_mem(50)  := X"00000";
-            var_insn_mem(51)  := X"00000";
-            var_insn_mem(52)  := X"00000";
-            var_insn_mem(53)  := X"00000";
-            var_insn_mem(54)  := X"00000";
-            var_insn_mem(55)  := X"00000";
-            var_insn_mem(56)  := X"00000";
-            var_insn_mem(57)  := X"00000";
-            var_insn_mem(58)  := X"00000";
-            var_insn_mem(59)  := X"00000";
-            var_insn_mem(60)  := X"00000";
-            var_insn_mem(61)  := X"00000";
-            var_insn_mem(62)  := X"00000";
-            var_insn_mem(63)  := X"00000";
-            var_insn_mem(64)  := X"00000";
-            var_insn_mem(65)  := X"00000";
-            var_insn_mem(66)  := X"00000";
-            var_insn_mem(67)  := X"00000";
-            var_insn_mem(68)  := X"00000";
-            var_insn_mem(69)  := X"00000";                
-            var_insn_mem(70)  := X"00000";      
-            var_insn_mem(71)  := X"00000"; 
-            var_insn_mem(72)  := X"00000";       
-            var_insn_mem(73)  := X"00000";
-            var_insn_mem(74)  := X"00000";
-            var_insn_mem(75)  := X"00000";
-            var_insn_mem(76)  := X"00000";
-            var_insn_mem(77)  := X"00000";
-            var_insn_mem(78)  := X"00000";
-            var_insn_mem(79)  := X"00000";
-            var_insn_mem(80)  := X"00000";      
-            var_insn_mem(81)  := X"00000"; 
-            var_insn_mem(82)  := X"00000";       
-            var_insn_mem(83)  := X"00000";
-            var_insn_mem(84)  := X"00000";
-            var_insn_mem(85)  := X"00000";
-            var_insn_mem(86)  := X"00000";
-            var_insn_mem(87)  := X"00000";
-            var_insn_mem(88)  := X"00000";
-            var_insn_mem(89)  := X"00000";
-            var_insn_mem(90)  := X"00000";      
-            var_insn_mem(91)  := X"00000"; 
-            var_insn_mem(92)  := X"00000";       
-            var_insn_mem(93)  := X"00000";
-            var_insn_mem(94)  := X"00000";
-            var_insn_mem(95)  := X"00000";
-            var_insn_mem(96)  := X"00000";
-            var_insn_mem(97)  := X"00000";
-            var_insn_mem(98)  := X"00000";
-            var_insn_mem(99)  := X"00000";                
+            var_insn_mem(30) := X"80040"; --add $4, $0, $0
+            var_insn_mem(31) := X"80060"; --add $6, $0, $0
+            var_insn_mem(32) := X"20200"; --iord $2
+            var_insn_mem(33) := X"42023"; --bne $2, $0, loop2
+            var_insn_mem(34) := X"4013B"; --bne $0, $1, exit
+            
+            --loop2
+            var_insn_mem(35) := X"14540"; --ld $5, $4[0x40]
+            var_insn_mem(36) := X"42527"; --bne $2, $5, else
+            var_insn_mem(37) := X"84140"; --add $4, $4, $1
+            var_insn_mem(38) := X"40133"; --bne $0, $1, check
+                --else
+            var_insn_mem(39) := X"4012E"; --bne $0, $1, special2_check
+                    --loop2_special
+            var_insn_mem(40) := X"84940"; --add $4, $4, $9
+            var_insn_mem(41) := X"14480"; --ld $4, $4[0x80]
+            var_insn_mem(42) := X"4012E"; --bne $0, $1, special2_check
+                        --special2_check_2
+            var_insn_mem(43) := X"14540"; --ld $5, $4[0x40]
+            var_insn_mem(44) := X"45228"; --bne $5, $2, loop2_special
+            var_insn_mem(45) := X"4012F"; --bne $0, $1, equal_check_2
+                        --special2_check
+            var_insn_mem(46) := X"4402B"; --bne $4, $0, special2_check_2
+                    --equal_check_2
+            var_insn_mem(47) := X"14540"; --ld $5, $4[0x40]
+            var_insn_mem(48) := X"45236"; --bne $5, $2, next_char
+            var_insn_mem(49) := X"84140"; --add $4, $4, $1
+            var_insn_mem(50) := X"40136"; --bne $0, $1, next_char
+                --check
+            var_insn_mem(51) := X"44336"; --bne $4, $3, next_char
+            var_insn_mem(52) := X"86160"; --add $6, $6, $1
+            var_insn_mem(53) := X"80040"; --add $4, $0, $0
+                --next_char
+            var_insn_mem(54) := X"00000"; --noop
+            var_insn_mem(55) := X"00000"; --noop
+            var_insn_mem(56) := X"00000"; --noop
+            var_insn_mem(57) := X"20200"; --iord $2
+            var_insn_mem(58) := X"42023"; --bne $2, $0, loop2
+            
+            --exit
+            var_insn_mem(59) := X"00000";
+            var_insn_mem(60) := X"00000";
+            var_insn_mem(61) := X"00000";
+            var_insn_mem(62) := X"00000";
+            var_insn_mem(63) := X"00000";
+            var_insn_mem(64) := X"00000";
+            var_insn_mem(65) := X"00000";
+            var_insn_mem(66) := X"00000";
+            var_insn_mem(67) := X"00000";
+            var_insn_mem(68) := X"00000";
+            var_insn_mem(69) := X"00000";                
+            var_insn_mem(70) := X"00000";      
+            var_insn_mem(71) := X"00000"; 
+            var_insn_mem(72) := X"00000";       
+            var_insn_mem(73) := X"00000";
+            var_insn_mem(74) := X"00000";
+            var_insn_mem(75) := X"00000";
+            var_insn_mem(76) := X"00000";
+            var_insn_mem(77) := X"00000";
+            var_insn_mem(78) := X"00000";
+            var_insn_mem(79) := X"00000";
+            var_insn_mem(80) := X"00000";      
+            var_insn_mem(81) := X"00000"; 
+            var_insn_mem(82) := X"00000";       
+            var_insn_mem(83) := X"00000";
+            var_insn_mem(84) := X"00000";
+            var_insn_mem(85) := X"00000";
+            var_insn_mem(86) := X"00000";
+            var_insn_mem(87) := X"00000";
+            var_insn_mem(88) := X"00000";
+            var_insn_mem(89) := X"00000";
+            var_insn_mem(90) := X"00000";      
+            var_insn_mem(91) := X"00000"; 
+            var_insn_mem(92) := X"00000";       
+            var_insn_mem(93) := X"00000";
+            var_insn_mem(94) := X"00000";
+            var_insn_mem(95) := X"00000";
+            var_insn_mem(96) := X"00000";
+            var_insn_mem(97) := X"00000";
+            var_insn_mem(98) := X"00000";
+            var_insn_mem(99) := X"00000";                
             var_insn_mem(100)  := X"00000";      
             var_insn_mem(100)  := X"00000";      
             var_insn_mem(101)  := X"00000"; 

@@ -1,0 +1,84 @@
+10100 // ld $1, addr(1)
+10901 // ld $9, addr(-1)
+80020 // add $2, $0, $0
+80030 // add $3, $0, $0
+20020 // iord $2
+
+loop1
+	33240 // store $2, $3[0x40]
+	81330 // add $3, $3, $1
+	20020 // iord $2
+	42005 // bne $2, $0, loop
+
+80040 // add $4, $0, $0
+34080 // store $0, $4[0x80]
+84140 // add $4, $4, $1
+80070 // add $7, $0, $0
+401__ // bne $0, $1, loop_p_check
+
+loop_p_table:
+	401__ // bne $0, $1, special_check
+	loop_special:
+		87970 // add $7, $7, $9
+		17780 // ld $7, $7[0x80]
+		401__ // bne $0, $1, special_check
+		special_check_2:
+			14540 // ld $5, $4[0x40]
+			17840 // ld $8, $7[0x40]
+			458__ // bne $5, $8, loop_special
+			401__ // bne $0, $1, equal_check
+		special_check:
+			470__ // bne $7, $0, special_check_2
+
+	equal_check:
+		14540 // ld $5, $4[0x40]
+		17840 // ld $8, $7[0x40]
+		458__ // bne $5, $8, common
+		87170 // add $7, $7, $1
+
+	common:
+		34780 // store $7, $4[80]
+		84140 // add $4, $4, $1
+	
+	loop_p_check:
+		443__ // bne $4, $3, loop_p_table
+		
+80040 // add $4, $0, $0
+80060 // add $6, $0, $0
+20020 // iord $2
+420__ // bne $2, $0, loop2
+401__ // bne $0, $1, exit
+
+loop2:
+	14540 // ld $5, $4[0x40]
+	425__ // bne $2, $5, else
+	84140 // add $4, $4, $1
+	401__ // bne $0, $1, check
+	
+	else:
+		401__ // bne $0, $1, special2_check
+		loop2_special:
+			84940 // add $4, $4, $9
+			14480 // ld $4, $4[0x80]
+			401__ // bne $0, $1, special2_check
+			special2_check_2:
+				14540 // ld $5, $4[0x40]
+				452__ // bne $5, $2, loop2_special
+				401__ // bne $0, $1, equal_check_2
+			special2_check:
+				440__ // bne $4, $0, special2_check_2
+		
+		equal_check_2
+			14540 // ld $5, $4[0x40]
+			452__ // bne $5, $2, next_char
+			84140 // add $4, $4, $1
+			401__ // bne $0, $1, next_char
+		
+	check:
+		443__ // bne $4, $3, next_char
+		86160 // add $6, $6, $1
+		80040 // add $4, $0, $0
+		
+	next_char:
+		20020 // iord $2
+		420__ // bne $2, $0, loop2
