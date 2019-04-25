@@ -34,12 +34,11 @@ end instruction_memory;
 
 architecture behavioral of instruction_memory is
 
-type mem_array is array(0 to 255) of std_logic_vector(255 downto 0);
+type mem_array is array(0 to 255) of std_logic_vector(19 downto 0);
 signal sig_insn_mem : mem_array;
 
 begin
-    mem_process: process ( clk,
-                           addr_in ) is
+    mem_process: process ( clk, reset, addr_in ) is
   
     variable var_insn_mem : mem_array;
     variable var_addr     : integer;

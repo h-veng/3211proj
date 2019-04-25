@@ -56,9 +56,9 @@ end reg_EX_MEM;
 architecture Behavioral of reg_EX_MEM is
 begin
 
-    update_process: process ( reset, clk ) is
+    update_process: process ( reset, clk, flush ) is
     begin
-        if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
+        if (reset = '1') then
             mem_to_reg_out <= '0';
             reg_write_out <= '0';
             branch_out <= '0';
@@ -69,15 +69,27 @@ begin
             write_reg_out <= (others => '0');
             branch_addr_out <= (others => '0');
         elsif (rising_edge(clk)) then
-            mem_to_reg_out <= mem_to_reg_in;
-            reg_write_out <= reg_write_in;
-            branch_out <= branch_in;
-            mem_write_out <= mem_write_in;
-            zero_out <= zero_in;
-            alu_result_out <= alu_result_in;
-            read_data_b_out <= read_data_b_in;
-            write_reg_out <= write_reg_in;
-            branch_addr_out <= branch_addr_in;
+            if(flush = '1') then
+                mem_to_reg_out <= '0';
+                reg_write_out <= '0';
+                branch_out <= '0';
+                mem_write_out <= '0';
+                zero_out <= '0';
+                alu_result_out <= (others => '0');
+                read_data_b_out <= (others => '0');
+                write_reg_out <= (others => '0');
+                branch_addr_out <= (others => '0'); 
+            else
+                mem_to_reg_out <= mem_to_reg_in;
+                reg_write_out <= reg_write_in;
+                branch_out <= branch_in;
+                mem_write_out <= mem_write_in;
+                zero_out <= zero_in;
+                alu_result_out <= alu_result_in;
+                read_data_b_out <= read_data_b_in;
+                write_reg_out <= write_reg_in;
+                branch_addr_out <= branch_addr_in;
+            end if;
         end if;
     end process;
    

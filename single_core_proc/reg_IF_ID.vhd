@@ -42,10 +42,14 @@ begin
     
     update_process: process ( reset, clk ) is
     begin
-        if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
+        if (reset = '1') then
             instr_out <= (others => '0'); 
-        elsif (rising_edge(clk) and (write_en = '1')) then
-            instr_out <= instr_in; 
+        elsif rising_edge(clk) then
+            if (flush = '1') then
+                instr_out <= (others => '0');
+            elsif (write_en = '1') then
+                instr_out <= instr_in; 
+            end if;
         end if;
     end process;
 

@@ -1,0 +1,276 @@
+Release 14.7 - xst P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.03 secs
+ 
+--> 
+Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.03 secs
+ 
+--> 
+Reading design: pipelined_core.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "pipelined_core.prj"
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "pipelined_core"
+Output Format                      : NGC
+Target Device                      : xc7a100t-3-csg324
+
+---- Source Options
+Top Module Name                    : pipelined_core
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Shift Register Extraction          : YES
+ROM Style                          : Auto
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Shift Register Minimum Size        : 2
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Auto
+Reduce Control Sets                : Auto
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 32
+Register Duplication               : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_1b.vhd" into library work
+Parsing entity <mux_2to1_1b>.
+Parsing architecture <behavioural> of entity <mux_2to1_1b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/cmp16.vhd" into library work
+Parsing entity <cmp16>.
+Parsing architecture <Behavioral> of entity <cmp16>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/adder_16b.vhd" into library work
+Parsing entity <adder_16b>.
+Parsing architecture <behavioural> of entity <adder_16b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/sign_extend_4to16.vhd" into library work
+Parsing entity <sign_extend_4to16>.
+Parsing architecture <behavioral> of entity <sign_extend_4to16>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/reg_MEM_WB.vhd" into library work
+Parsing entity <reg_MEM_WB>.
+Parsing architecture <Behavioral> of entity <reg_mem_wb>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/reg_IF_ID.vhd" into library work
+Parsing entity <reg_IF_ID>.
+Parsing architecture <Behavioral> of entity <reg_if_id>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/reg_ID_EX.vhd" into library work
+Parsing entity <reg_ID_EX>.
+Parsing architecture <Behavioral> of entity <reg_id_ex>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/reg_EX_MEM.vhd" into library work
+Parsing entity <reg_EX_MEM>.
+Parsing architecture <Behavioral> of entity <reg_ex_mem>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/register_file.vhd" into library work
+Parsing entity <register_file>.
+Parsing architecture <behavioral> of entity <register_file>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/program_counter.vhd" into library work
+Parsing entity <program_counter>.
+Parsing architecture <behavioral> of entity <program_counter>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_8b.vhd" into library work
+Parsing entity <mux_2to1_8b>.
+Parsing architecture <structural> of entity <mux_2to1_8b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_4b.vhd" into library work
+Parsing entity <mux_2to1_4b>.
+Parsing architecture <structural> of entity <mux_2to1_4b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_16b.vhd" into library work
+Parsing entity <mux_2to1_16b>.
+Parsing architecture <structural> of entity <mux_2to1_16b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/instruction_memory.vhd" into library work
+Parsing entity <instruction_memory>.
+Parsing architecture <behavioral> of entity <instruction_memory>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/hazard_detection_unit.vhd" into library work
+Parsing entity <hazard_detection_unit>.
+Parsing architecture <Behavioral> of entity <hazard_detection_unit>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/forwarding_unit.vhd" into library work
+Parsing entity <forwarding_unit>.
+Parsing architecture <Behavioral> of entity <forwarding_unit>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/data_memory.vhd" into library work
+Parsing entity <data_memory>.
+Parsing architecture <behavioral> of entity <data_memory>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/control_unit.vhd" into library work
+Parsing entity <control_unit>.
+Parsing architecture <behavioural> of entity <control_unit>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/branch_prediction_unit.vhd" into library work
+Parsing entity <branch_prediction_unit>.
+Parsing architecture <Behavioral> of entity <branch_prediction_unit>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/alu_op_2_mux.vhd" into library work
+Parsing entity <alu_op_2_mux>.
+Parsing architecture <Behavioral> of entity <alu_op_2_mux>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/alu_op_1_mux.vhd" into library work
+Parsing entity <alu_op_1_mux>.
+Parsing architecture <Behavioral> of entity <alu_op_1_mux>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/alu_16.vhd" into library work
+Parsing entity <alu_16>.
+Parsing architecture <Structural> of entity <alu_16>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/adder_4b.vhd" into library work
+Parsing entity <adder_4b>.
+Parsing architecture <behavioural> of entity <adder_4b>.
+Parsing VHDL file "/home/henry-veng/cs3211/3211proj/single_core_proc/pipelined_core.vhd" into library work
+Parsing entity <pipelined_core>.
+Parsing architecture <structural> of entity <pipelined_core>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <pipelined_core> (architecture <structural>) from library <work>.
+
+Elaborating entity <program_counter> (architecture <behavioral>) from library <work>.
+
+Elaborating entity <mux_2to1_8b> (architecture <structural>) from library <work>.
+
+Elaborating entity <mux_2to1_1b> (architecture <behavioural>) from library <work>.
+
+Elaborating entity <adder_4b> (architecture <behavioural>) from library <work>.
+
+Elaborating entity <instruction_memory> (architecture <behavioral>) from library <work>.
+WARNING:HDLCompiler:1127 - "/home/henry-veng/cs3211/3211proj/single_core_proc/instruction_memory.vhd" Line 41: Assignment to sig_insn_mem ignored, since the identifier is never used
+
+Elaborating entity <reg_IF_ID> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <sign_extend_4to16> (architecture <behavioral>) from library <work>.
+
+Elaborating entity <register_file> (architecture <behavioral>) from library <work>.
+WARNING:HDLCompiler:1127 - "/home/henry-veng/cs3211/3211proj/single_core_proc/register_file.vhd" Line 45: Assignment to sig_regfile ignored, since the identifier is never used
+
+Elaborating entity <control_unit> (architecture <behavioural>) from library <work>.
+
+Elaborating entity <reg_ID_EX> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <mux_2to1_4b> (architecture <structural>) from library <work>.
+
+Elaborating entity <mux_2to1_16b> (architecture <structural>) from library <work>.
+
+Elaborating entity <alu_16> (architecture <Structural>) from library <work>.
+
+Elaborating entity <cmp16> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <adder_16b> (architecture <behavioural>) from library <work>.
+
+Elaborating entity <reg_EX_MEM> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <data_memory> (architecture <behavioral>) from library <work>.
+WARNING:HDLCompiler:92 - "/home/henry-veng/cs3211/3211proj/single_core_proc/data_memory.vhd" Line 53: reset should be on the sensitivity list of the process
+WARNING:HDLCompiler:1127 - "/home/henry-veng/cs3211/3211proj/single_core_proc/data_memory.vhd" Line 42: Assignment to sig_data_mem ignored, since the identifier is never used
+
+Elaborating entity <reg_MEM_WB> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <hazard_detection_unit> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <forwarding_unit> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <alu_op_1_mux> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <alu_op_2_mux> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <branch_prediction_unit> (architecture <Behavioral>) from library <work>.
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <pipelined_core>.
+    Related source file is "/home/henry-veng/cs3211/3211proj/single_core_proc/pipelined_core.vhd".
+INFO:Xst:3210 - "/home/henry-veng/cs3211/3211proj/single_core_proc/pipelined_core.vhd" line 395: Output port <carry_out> of the instance <adder_pc> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/henry-veng/cs3211/3211proj/single_core_proc/pipelined_core.vhd" line 506: Output port <carry_out> of the instance <alu> is unconnected or connected to loadless signal.
+    Summary:
+	no macro.
+Unit <pipelined_core> synthesized.
+
+Synthesizing Unit <program_counter>.
+    Related source file is "/home/henry-veng/cs3211/3211proj/single_core_proc/program_counter.vhd".
+    Found 8-bit register for signal <addr_out>.
+    Summary:
+	inferred   8 D-type flip-flop(s).
+Unit <program_counter> synthesized.
+
+Synthesizing Unit <mux_2to1_8b>.
+    Related source file is "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_8b.vhd".
+    Summary:
+	no macro.
+Unit <mux_2to1_8b> synthesized.
+
+Synthesizing Unit <mux_2to1_1b>.
+    Related source file is "/home/henry-veng/cs3211/3211proj/single_core_proc/mux_2to1_1b.vhd".
+    Summary:
+	inferred   1 Multiplexer(s).
+Unit <mux_2to1_1b> synthesized.
+
+Synthesizing Unit <adder_4b>.
+    Related source file is "/home/henry-veng/cs3211/3211proj/single_core_proc/adder_4b.vhd".
+    Found 9-bit adder for signal <sig_result> created at line 38.
+    Summary:
+	inferred   1 Adder/Subtractor(s).
+Unit <adder_4b> synthesized.

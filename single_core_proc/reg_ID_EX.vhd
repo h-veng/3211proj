@@ -70,7 +70,7 @@ begin
 
     update_process: process ( reset, clk ) is
     begin
-        if ((reset = '1') or (rising_edge(clk) and flush = '1')) then
+        if (reset = '1') then
             mem_to_reg_out <= '0';
             reg_write_out <= '0';
             branch_out <= '0';
@@ -87,21 +87,39 @@ begin
             write_reg_b_out <= (others => '0');
             branch_addr_out <= (others => '0');
         elsif (rising_edge(clk)) then
-            mem_to_reg_out <= mem_to_reg_in;
-            reg_write_out <= reg_write_in;
-            branch_out <= branch_in;
-            mem_write_out <= mem_write_in;
-            io_read_out <= io_read_in;
-            alu_out <= alu_in;
-            alu_src_out <= alu_src_in;
-            reg_dst_out <= reg_dst_in;
-            read_data_a_out <= read_data_a_in;
-            read_data_b_out <= read_data_b_in;
-            imm_out <= imm_in;
-            reg_rs_out <= reg_rs_in;
-            write_reg_a_out <= write_reg_a_in;
-            write_reg_b_out <= write_reg_b_in;
-            branch_addr_out <= branch_addr_in;
+            if (flush = '1') then
+                mem_to_reg_out <= '0';
+                reg_write_out <= '0';
+                branch_out <= '0';
+                mem_write_out <= '0';
+                io_read_out <= '0';
+                alu_out <= '0';
+                alu_src_out <= '0';
+                reg_dst_out <= '0';
+                read_data_a_out <= (others => '0');
+                read_data_b_out <= (others => '0');
+                imm_out <= (others => '0');
+                reg_rs_out <= (others => '0');
+                write_reg_a_out <= (others => '0');
+                write_reg_b_out <= (others => '0');
+                branch_addr_out <= (others => '0');
+            else
+                mem_to_reg_out <= mem_to_reg_in;
+                reg_write_out <= reg_write_in;
+                branch_out <= branch_in;
+                mem_write_out <= mem_write_in;
+                io_read_out <= io_read_in;
+                alu_out <= alu_in;
+                alu_src_out <= alu_src_in;
+                reg_dst_out <= reg_dst_in;
+                read_data_a_out <= read_data_a_in;
+                read_data_b_out <= read_data_b_in;
+                imm_out <= imm_in;
+                reg_rs_out <= reg_rs_in;
+                write_reg_a_out <= write_reg_a_in;
+                write_reg_b_out <= write_reg_b_in;
+                branch_addr_out <= branch_addr_in;
+            end if;
         end if;
     end process;
     

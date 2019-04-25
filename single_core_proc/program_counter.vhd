@@ -37,8 +37,7 @@ end program_counter;
 architecture behavioral of program_counter is
 begin
 
-    update_process: process ( reset, 
-                              clk ) is
+    update_process: process ( reset, clk, pc_write ) is
     begin
        if (reset = '1') then
            addr_out <= (others => '0'); 
