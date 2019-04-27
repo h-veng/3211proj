@@ -249,6 +249,7 @@ end component;
 
 component hazard_detection_unit is
     port ( mem_read         : in  std_logic; --mem_to_reg_ex
+           branch_check     : in  std_logic;
            id_reg_rs        : in  std_logic_vector(3 downto 0);
            id_reg_rt        : in  std_logic_vector(3 downto 0);
            ex_reg_rt        : in  std_logic_vector(3 downto 0);
@@ -577,6 +578,7 @@ begin
      -- hazard detection unit for LUH: stall
      hazard_unit : hazard_detection_unit
      port map ( mem_read         => sig_mem_to_reg_ex,
+                branch_check     => sig_branch_sel,
                 id_reg_rs        => sig_insn_id(15 downto 12),
                 id_reg_rt        => sig_insn_id(11 downto 8),
                 ex_reg_rt        => sig_write_reg_a_ex,
