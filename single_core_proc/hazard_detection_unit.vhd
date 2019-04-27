@@ -32,6 +32,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity hazard_detection_unit is
     port ( mem_read         : in  std_logic; --mem_to_reg_ex
+           branch_check     : in  std_logic;
            id_reg_rs        : in  std_logic_vector(3 downto 0);
            id_reg_rt        : in  std_logic_vector(3 downto 0);
            ex_reg_rt        : in  std_logic_vector(3 downto 0);
@@ -43,12 +44,12 @@ end hazard_detection_unit;
 architecture Behavioral of hazard_detection_unit is
 
 begin
-    process ( mem_read, id_reg_rs, id_reg_rt, ex_reg_rt ) is
+    process ( mem_read, id_reg_rs, id_reg_rt, ex_reg_rt, branch_check ) is
     begin
         pc_write <= '1';
         if_id_write <= '1';
         id_ex_ctrl_flush <= '0';
-        if ( mem_read = '1' ) then
+        if ( mem_read = '1' and branch_check = '0' ) then
             if ((id_reg_rs = ex_reg_rt) or (id_reg_rt = ex_reg_rt)) then
                 pc_write <= '0';
                 if_id_write <= '0';
